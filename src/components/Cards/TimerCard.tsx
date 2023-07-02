@@ -31,7 +31,7 @@ export function TimerCard(props: Props) {
             <Button>Break</Button>
           </Stack>
           <Typography variant="h1">00:00</Typography>
-          <Stack direction="row" spacing={2} mt={1}>
+          <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained">Start</Button>
             <Button variant="outlined">Reset</Button>
           </Stack>
