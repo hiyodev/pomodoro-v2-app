@@ -1,9 +1,12 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import ThemeToggleSwitch from "../Buttons/ThemeToggleSwitch";
-import { themeProps } from "../../shared/interfaces/interfaces";
-import { useState } from "react";
 
-export function TopBar({ darkMode, setDarkMode }: themeProps) {
+interface Props {
+  darkMode: boolean;
+  setDarkMode: (darkMode: boolean) => void;
+}
+
+export function TopBar({ darkMode, setDarkMode }: Props) {
   return (
     <AppBar position="static">
       <Toolbar>

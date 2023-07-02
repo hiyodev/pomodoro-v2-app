@@ -1,5 +1,4 @@
 import { styled, FormControlLabel, FormGroup, Switch } from "@mui/material";
-import { themeProps } from "../../shared/interfaces/interfaces";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -48,7 +47,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const ThemeToggleSwitch = ({ darkMode, setDarkMode }: themeProps) => {
+interface Props {
+  darkMode: boolean;
+  setDarkMode: (darkMode: boolean) => void;
+}
+
+const ThemeToggleSwitch = ({ darkMode, setDarkMode }: Props) => {
   return (
     <FormGroup>
       <FormControlLabel
