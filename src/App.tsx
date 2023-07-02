@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import { TopBar } from "./components/TopBar/TopBar";
 import { useState } from "react";
+import { TimerCard } from "./components/Cards/TimerCard";
 
 const lightTheme = createTheme({
   palette: {
@@ -27,8 +28,8 @@ const App = () => {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <CssBaseline />
         <TopBar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <Container maxWidth="sm">
-          <h1>Hello</h1>
+        <Container maxWidth="xs">
+          <TimerCard />
         </Container>
       </ThemeProvider>
     </>
