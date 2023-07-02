@@ -1,5 +1,13 @@
 import * as React from "react";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 export interface Props {}
 
@@ -7,8 +15,26 @@ export function TimerCard(props: Props) {
   return (
     <Box mt={2} mb={2}>
       <Card variant="outlined">
-        <CardContent sx={{ textAlign: "center" }}>
-          <Typography variant="h2">00:00</Typography>
+        <CardContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Stack
+            direction="row"
+            spacing={1}
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            <Button>Focus</Button>
+            <Button>Break</Button>
+          </Stack>
+          <Typography variant="h1">00:00</Typography>
+          <Stack direction="row" spacing={2} mt={1}>
+            <Button variant="contained">Start</Button>
+            <Button variant="outlined">Reset</Button>
+          </Stack>
         </CardContent>
       </Card>
     </Box>
