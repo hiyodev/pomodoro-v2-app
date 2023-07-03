@@ -8,13 +8,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { ProjectList } from "../Projects/ProjectList";
 
-export interface Props {}
-
-export function TimerCard(props: Props) {
+export function TimerCard() {
   return (
     <Box mt={2} mb={2}>
-      <Card variant="outlined">
+      <Card>
         <CardContent
           sx={{
             display: "flex",
@@ -37,6 +36,7 @@ export function TimerCard(props: Props) {
           </Stack>
         </CardContent>
       </Card>
+      <ProjectList />
     </Box>
   );
 }

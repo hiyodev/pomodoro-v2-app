@@ -1,19 +1,22 @@
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import * as React from "react";
 
 // tsrpfc
 
-interface Props {
-  name: string;
-  age: number;
-  email: string;
-}
-
-export const ProjectList = (props: Props) => {
+export const ProjectList = () => {
   return (
-    <div>
-      <h1>{props.name}</h1>
-      <h1>{props.age}</h1>
-      <h1>{props.email}</h1>
-    </div>
+    <Box mt={2} mb={2}>
+      <Card variant="outlined">
+        <CardContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6">Projects</Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
