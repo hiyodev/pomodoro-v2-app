@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ProjectList } from "../Projects/ProjectList";
+import { secondsIntoTimer } from "../../utils/utils";
 
 /*
 Store Project List and Task List in Redux
@@ -60,7 +61,9 @@ export function TimerCard() {
             <Button>Focus</Button>
             <Button>Break</Button>
           </Stack>
-          <Typography variant="h1">{timerDuration}</Typography>
+          <Typography variant="h1">
+            {secondsIntoTimer(timerDuration)}
+          </Typography>
           <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained" onClick={onTimerStateChange}>
               {timerStarted ? "Pause" : "Start"}
