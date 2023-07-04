@@ -10,18 +10,29 @@ import {
 } from "@mui/material";
 import { ProjectList } from "../Projects/ProjectList";
 
+/*
+Store Project List and Task List in Redux
+Store timeNow so that if user closes browser and 
+comes back 5 mins later, it will reflect the correct time
+*/
+
 export function TimerCard() {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
-  const [timerDuration, setTimerDuration] = useState<number>(0);
+  const [timerDuration, setTimerDuration] = useState<number>(3600);
 
   useEffect(() => {
-    console.log(Date.now());
-    let timeNow: number | null = null;
+    let timeNow: number = 0;
     let timeInterval: number | undefined;
 
     if (timerStarted) {
       timeNow = Date.now();
-      timeInterval = setInterval(() => console.log("Hi"), 1000);
+      timeInterval = setInterval(
+        () =>
+          setTimerDuration(
+            timerDuration - Math.floor((Date.now() - timeNow) / 1000)
+          ),
+        1000
+      );
     }
 
     return () => clearInterval(timeInterval);
