@@ -10,35 +10,56 @@ import { EffectCoverflow } from "swiper/modules";
 import "./styles.css";
 import { useState, useEffect } from "react";
 
-const timeData = [
-  {
-    id: 1,
-    cardTitle: "Card 1",
-    timeDuration: 3600,
-  },
-  {
-    id: 2,
-    cardTitle: "Card 2",
-    timeDuration: 3600,
-  },
-];
+const userData = {
+  selectedCard: 0,
+  timeData: [
+    {
+      id: 1,
+      cardTitle: "Card 1111",
+      timeDuration: 3600,
+    },
+    {
+      id: 2,
+      cardTitle: "Card 22222",
+      timeDuration: 3600,
+    },
+    {
+      id: 3,
+      cardTitle: "Card 33333",
+      timeDuration: 3600,
+    },
+  ],
+};
 
 export const TimerCardList = (): JSX.Element => {
+  const [selectedCard, setSelectedCard] = useState<string | number>(
+    localStorage.getItem("cardID") || 0
+  );
   const [sliderInstance, setSliderInstance] = useState<SwiperClass | null>(
     null
   );
 
   useEffect(() => {
     if (sliderInstance !== null && !sliderInstance.destroyed) {
-      console.log(sliderInstance);
-      sliderInstance.slideTo(1);
+      sliderInstance.slideTo(Number(selectedCard));
     }
   }, [sliderInstance]);
+
+  useEffect(() => {
+    localStorage.setItem("cardID", JSON.stringify(selectedCard));
+  }, [selectedCard]);
+
+  const cardData = userData.timeData.map((currCard) => (
+    <SwiperSlide key={currCard.id}>
+      <TimerCard title={currCard.cardTitle} />
+    </SwiperSlide>
+  ));
 
   return (
     <>
       <Swiper
         onInit={(e) => setSliderInstance(e)}
+        onSlideChange={(e) => setSelectedCard(e.activeIndex)}
         effect={"coverflow"}
         centeredSlides={true}
         slidesPerView={"auto"}
@@ -52,15 +73,7 @@ export const TimerCardList = (): JSX.Element => {
         modules={[EffectCoverflow]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <TimerCard title="Card 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <TimerCard title="Card 2" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <TimerCard title="Card 3" />
-        </SwiperSlide>
+        {cardData}
       </Swiper>
     </>
   );
