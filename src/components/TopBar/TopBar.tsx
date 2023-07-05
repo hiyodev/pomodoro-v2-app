@@ -6,7 +6,7 @@ interface Props {
   setDarkMode: (darkMode: boolean) => void;
 }
 
-export function TopBar({ darkMode, setDarkMode }: Props) {
+export const TopBar = ({ darkMode, setDarkMode }: Props): JSX.Element => {
   return (
     <AppBar position="static">
       <Toolbar>
@@ -17,4 +17,4 @@ export function TopBar({ darkMode, setDarkMode }: Props) {
       </Toolbar>
     </AppBar>
   );
-}
+};
