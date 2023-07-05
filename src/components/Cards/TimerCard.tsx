@@ -26,7 +26,11 @@ userInputData = {
 
 */
 
-export const TimerCard = (): JSX.Element => {
+interface Props {
+  title: string;
+}
+
+export const TimerCard = ({ title }: Props): JSX.Element => {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
   const [timerDuration, setTimerDuration] = useState<number>(1500);
 
@@ -68,7 +72,7 @@ export const TimerCard = (): JSX.Element => {
           }}
         >
           <Typography variant="h5" textAlign="center" gutterBottom>
-            Working on Projects Something Else
+            {title}
           </Typography>
           <Stack
             direction="row"
