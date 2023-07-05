@@ -18,8 +18,8 @@ export const TimerCardList = (): JSX.Element => {
         slidesPerView={"auto"}
         coverflowEffect={{
           rotate: 0,
-          stretch: 0,
-          depth: 355,
+          stretch: 100,
+          depth: 400,
           modifier: 1,
           slideShadows: true,
         }}

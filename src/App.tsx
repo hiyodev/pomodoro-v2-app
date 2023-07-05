@@ -28,7 +28,7 @@ const App = (): JSX.Element => {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <CssBaseline />
         <TopBar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <TimerCardList />
         </Container>
       </ThemeProvider>

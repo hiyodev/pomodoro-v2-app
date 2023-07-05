@@ -67,8 +67,8 @@ export const TimerCard = (): JSX.Element => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h5" gutterBottom>
-            Working on Projects
+          <Typography variant="h5" textAlign="center" gutterBottom>
+            Working on Projects Something Else
           </Typography>
           <Stack
             direction="row"
