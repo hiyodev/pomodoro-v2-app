@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,16 +9,26 @@ import {
 } from "@mui/material";
 import { ProjectList } from "../Projects/ProjectList";
 import { secondsIntoTimer } from "../../utils/utils";
+import { useEffect, useState } from "react";
 
 /*
 Store Project List and Task List in Redux
 Store timeNow so that if user closes browser and 
 comes back 5 mins later, it will reflect the correct time
+
+userTimeData = {
+
+};
+
+userInputData = {
+
+};
+
 */
 
-export function TimerCard() {
+export const TimerCard = (): JSX.Element => {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
-  const [timerDuration, setTimerDuration] = useState<number>(3600);
+  const [timerDuration, setTimerDuration] = useState<number>(1500);
 
   useEffect(() => {
     let timeNow: number = 0;
@@ -41,6 +50,11 @@ export function TimerCard() {
 
   const onTimerStateChange = () => {
     setTimerStarted((prevState) => !prevState);
+  };
+
+  const onTimerReset = () => {
+    setTimerDuration(1500);
+    setTimerStarted(false);
   };
 
   return (
@@ -68,7 +82,7 @@ export function TimerCard() {
             <Button variant="contained" onClick={onTimerStateChange}>
               {timerStarted ? "Pause" : "Start"}
             </Button>
-            <Button variant="outlined" onClick={onTimerStateChange}>
+            <Button variant="outlined" onClick={onTimerReset}>
               Reset
             </Button>
           </Stack>
@@ -77,4 +91,4 @@ export function TimerCard() {
       <ProjectList />
     </Box>
   );
-}
+};

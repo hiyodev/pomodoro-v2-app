@@ -52,7 +52,7 @@ interface Props {
   setDarkMode: (darkMode: boolean) => void;
 }
 
-const ThemeToggleSwitch = ({ darkMode, setDarkMode }: Props) => {
+const ThemeToggleSwitch = ({ darkMode, setDarkMode }: Props): JSX.Element => {
   return (
     <FormGroup>
       <FormControlLabel

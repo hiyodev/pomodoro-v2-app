@@ -5,8 +5,8 @@ import {
   createTheme,
 } from "@mui/material";
 import { TopBar } from "./components/TopBar/TopBar";
+import { TimerCardList } from "./components/Cards/TimerCardList";
 import { useState } from "react";
-import { TimerCard } from "./components/Cards/TimerCard";
 
 const lightTheme = createTheme({
   palette: {
@@ -20,7 +20,7 @@ const darkTheme = createTheme({
   },
 });
 
-const App = () => {
+const App = (): JSX.Element => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
 
   return (
@@ -29,7 +29,7 @@ const App = () => {
         <CssBaseline />
         <TopBar darkMode={darkMode} setDarkMode={setDarkMode} />
         <Container maxWidth="xs">
-          <TimerCard />
+          <TimerCardList />
         </Container>
       </ThemeProvider>
     </>

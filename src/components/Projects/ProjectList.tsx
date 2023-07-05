@@ -1,9 +1,6 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import * as React from "react";
 
-// tsrpfc
-
-export const ProjectList = () => {
+export const ProjectList = (): JSX.Element => {
   return (
     <Box mt={2} mb={2}>
       <Card variant="outlined">
