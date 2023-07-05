@@ -21,6 +21,9 @@ export function TimerCard() {
             alignItems: "center",
           }}
         >
+          <Typography variant="h5" gutterBottom>
+            Working on Projects
+          </Typography>
           <Stack
             direction="row"
             spacing={1}
