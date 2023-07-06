@@ -9,18 +9,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState, Fragment } from "react";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { styled } from "styled-components";
+import { useState } from "react";
 
 // Dummy data for testing
 const projectData = [
   {
     id: 1,
-    title: "Test Title goes here",
+    title: "Test Title goes here and many more title crap goes here",
     details:
       "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
     tasks: [],
   },
+  {
+    id: 2,
+    title: "This is another test",
+    details: "Let's see how this looks like when it's shorter.",
+    tasks: [],
+  },
 ];
+
+const RightPaddingStyled = styled.div`
+  padding-right: 5px;
+`;
 
 export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
@@ -30,11 +42,23 @@ export const ProjectList = (): JSX.Element => {
       <Paper
         key={project.id}
         variant="outlined"
-        sx={{ padding: 2, marginBottom: 1 }}
+        sx={{
+          paddingLeft: 2,
+          paddingTop: 1,
+          paddingBottom: 1,
+          marginBottom: 1,
+        }}
       >
-        <Typography variant="h6" gutterBottom>
-          {project.title}
-        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
+            {project.title}
+          </Typography>
+          <RightPaddingStyled>
+            <Button>
+              <MoreHorizIcon />
+            </Button>
+          </RightPaddingStyled>
+        </Stack>
         <Typography>{project.details}</Typography>
       </Paper>
     );

@@ -31,6 +31,8 @@ const userData = {
   ],
 };
 
+// MAJOR BUG: Sometimes cardID is null resulting in cards being bugged on restart for some reason...
+
 export const TimerCardList = (): JSX.Element => {
   const [selectedCard, setSelectedCard] = useState<string | number>(
     localStorage.getItem("cardID") || 0
