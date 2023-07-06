@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 
 export const ProjectList = (): JSX.Element => {
-  const [openInput, setOpenInput] = useState(false);
+  const [openInput, setOpenInput] = useState<boolean>(false);
 
   return (
     <Box mt={1} mb={2}>
@@ -46,10 +46,23 @@ export const ProjectList = (): JSX.Element => {
                 multiline
                 rows={3}
               />
-              <Stack direction="row" spacing={2} mt={2}>
-                <Button>Checklist</Button>
-                <Button variant="outlined">Cancel</Button>
-                <Button variant="contained">Save</Button>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                spacing={2}
+                mt={2}
+                width="100%"
+              >
+                <Button>Tasks</Button>
+                <Stack direction="row" spacing={1}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setOpenInput(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant="contained">Save</Button>
+                </Stack>
               </Stack>
             </>
           )}
