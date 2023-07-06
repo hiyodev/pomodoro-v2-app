@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -24,21 +25,34 @@ export const ProjectList = (): JSX.Element => {
           {!openInput && (
             <Button onClick={() => setOpenInput(true)}>Add Project</Button>
           )}
-          <TextField
-            sx={{ marginBottom: 2 }}
-            fullWidth
-            variant="filled"
-            autoComplete="off"
-            id="project-title-input"
-            placeholder="What are you working on?"
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            id="project-details-input"
-            multiline
-            rows={3}
-          />
+          {openInput && (
+            <>
+              <TextField
+                sx={{ marginBottom: 1 }}
+                required
+                hiddenLabel
+                fullWidth
+                variant="outlined"
+                autoComplete="off"
+                id="project-title-input"
+                placeholder="What are you working on?"
+              />
+              <TextField
+                fullWidth
+                hiddenLabel
+                variant="outlined"
+                id="project-details-input"
+                placeholder="Additional Info about task..."
+                multiline
+                rows={3}
+              />
+              <Stack direction="row" spacing={2} mt={2}>
+                <Button>Checklist</Button>
+                <Button variant="outlined">Cancel</Button>
+                <Button variant="contained">Save</Button>
+              </Stack>
+            </>
+          )}
         </CardContent>
       </Card>
     </Box>
