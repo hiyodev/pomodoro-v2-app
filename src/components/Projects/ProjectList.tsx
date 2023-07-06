@@ -66,7 +66,7 @@ export const ProjectList = (): JSX.Element => {
 
   return (
     <Box mt={1} mb={2}>
-      <Card>
+      <Card className="swiper-no-swiping">
         <CardContent
           sx={{
             display: "flex",
