@@ -51,7 +51,7 @@ export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<ProjectList>(dummyData);
 
-  const onEditHandler = (id: number, editState: boolean) => {
+  const onEditHandler = (id: number, editState: boolean): void => {
     setProjectData((currProjects): ProjectList => {
       return currProjects.map((project) => {
         if (project.id === id) {
@@ -60,6 +60,12 @@ export const ProjectList = (): JSX.Element => {
 
         return project;
       });
+    });
+  };
+
+  const onDeleteHandler = (id: number): void => {
+    setProjectData((currProjects): ProjectList => {
+      return currProjects.filter((project) => project.id !== id);
     });
   };
 
@@ -75,7 +81,7 @@ export const ProjectList = (): JSX.Element => {
       let newId: number = 0;
 
       if (currProjects.length !== 0) {
-        newId = currProjects.length + 1;
+        newId = currProjects[currProjects.length - 1].id + 1;
       }
 
       return [
@@ -133,7 +139,9 @@ export const ProjectList = (): JSX.Element => {
             mt={2}
             width="100%"
           >
-            <Button color="error">Delete</Button>
+            <Button color="error" onClick={() => onDeleteHandler(project.id)}>
+              Delete
+            </Button>
             <Stack direction="row" spacing={1}>
               <Button
                 variant="outlined"
