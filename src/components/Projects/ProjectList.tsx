@@ -48,6 +48,29 @@ export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<ProjectList>(dummyData);
 
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    const input = new FormData(e.currentTarget);
+    const title = String(input.get("project-title-input"));
+    const details = String(input.get("project-details-input"));
+    e.currentTarget.reset();
+    setOpenInput(false);
+
+    setProjectData((currProjects): ProjectList => {
+      let newId: number = 0;
+
+      if (currProjects.length !== 0) {
+        newId = currProjects.length + 1;
+      }
+
+      return [
+        ...currProjects,
+        { id: newId, title: title, details: details, tasks: [] },
+      ];
+    });
+  };
+
   const projectList = projectData.map((project) => {
     return (
       <Paper
@@ -93,7 +116,7 @@ export const ProjectList = (): JSX.Element => {
           )}
           {openInput && (
             <Grow in={openInput}>
-              <div>
+              <form onSubmit={onSubmitHandler}>
                 <TextField
                   sx={{ marginBottom: 1 }}
                   required
@@ -101,6 +124,7 @@ export const ProjectList = (): JSX.Element => {
                   fullWidth
                   variant="outlined"
                   autoComplete="off"
+                  name="project-title-input"
                   id="project-title-input"
                   placeholder="What are you working on?"
                 />
@@ -108,6 +132,7 @@ export const ProjectList = (): JSX.Element => {
                   fullWidth
                   hiddenLabel
                   variant="outlined"
+                  name="project-details-input"
                   id="project-details-input"
                   placeholder="Additional Info about task..."
                   multiline
@@ -128,10 +153,12 @@ export const ProjectList = (): JSX.Element => {
                     >
                       Cancel
                     </Button>
-                    <Button variant="contained">Save</Button>
+                    <Button variant="contained" type="submit">
+                      Save
+                    </Button>
                   </Stack>
                 </Stack>
-              </div>
+              </form>
             </Grow>
           )}
         </CardContent>
