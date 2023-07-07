@@ -51,7 +51,7 @@ export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<ProjectList>(dummyData);
 
-  const onEditHandler = (id: number, editState: boolean): void => {
+  const onEditModeHandler = (id: number, editState: boolean): void => {
     setProjectData((currProjects): ProjectList => {
       return currProjects.map((project) => {
         if (project.id === id) {
@@ -69,6 +69,28 @@ export const ProjectList = (): JSX.Element => {
   const onDeleteHandler = (id: number): void => {
     setProjectData((currProjects): ProjectList => {
       return currProjects.filter((project) => project.id !== id);
+    });
+  };
+
+  const onEditSaveHandler = (
+    e: React.FormEvent<HTMLFormElement>,
+    id: number
+  ): void => {
+    e.preventDefault();
+
+    const input = new FormData(e.currentTarget);
+    const title = String(input.get("project-title-edit"));
+    const details = String(input.get("project-details-edit"));
+
+    setProjectData((currProjects): ProjectList => {
+      return currProjects.map((project) => {
+        if (project.id === id) {
+          project.title = title;
+          project.details = details;
+          project.editMode = false;
+        }
+        return project;
+      });
     });
   };
 
@@ -103,6 +125,8 @@ export const ProjectList = (): JSX.Element => {
     if (project.editMode) {
       return (
         <Paper
+          component="form"
+          onSubmit={(e) => onEditSaveHandler(e, project.id)}
           key={project.id}
           variant="outlined"
           sx={{
@@ -147,11 +171,13 @@ export const ProjectList = (): JSX.Element => {
             <Stack direction="row" spacing={1}>
               <Button
                 variant="outlined"
-                onClick={() => onEditHandler(project.id, false)}
+                onClick={() => onEditModeHandler(project.id, false)}
               >
                 Cancel
               </Button>
-              <Button variant="contained">Save</Button>
+              <Button variant="contained" type="submit">
+                Save
+              </Button>
             </Stack>
           </Stack>
         </Paper>
@@ -176,7 +202,7 @@ export const ProjectList = (): JSX.Element => {
             <div>
               <Button
                 sx={{ maxWidth: 45, minWidth: 0 }}
-                onClick={() => onEditHandler(project.id, true)}
+                onClick={() => onEditModeHandler(project.id, true)}
               >
                 <MoreHorizIcon />
               </Button>
