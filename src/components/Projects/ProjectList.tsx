@@ -56,6 +56,9 @@ export const ProjectList = (): JSX.Element => {
       return currProjects.map((project) => {
         if (project.id === id) {
           project.editMode = editState;
+        } else if (editState === true) {
+          // Flip others to false
+          project.editMode = false;
         }
 
         return project;
@@ -78,11 +81,10 @@ export const ProjectList = (): JSX.Element => {
     e.currentTarget.reset();
 
     setProjectData((currProjects): ProjectList => {
-      let newId: number = 0;
-
-      if (currProjects.length !== 0) {
-        newId = currProjects[currProjects.length - 1].id + 1;
-      }
+      const newId: number =
+        currProjects.length > 0
+          ? currProjects[currProjects.length - 1].id + 1
+          : 0;
 
       return [
         ...currProjects,
