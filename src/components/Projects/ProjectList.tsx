@@ -16,6 +16,7 @@ import { useState } from "react";
 const dummyData = [
   {
     id: 1,
+    editMode: false,
     title: "Test Title goes here and many more title crap goes here",
     details:
       "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
@@ -23,6 +24,7 @@ const dummyData = [
   },
   {
     id: 2,
+    editMode: false,
     title: "This is another test",
     details: "Let's see how this looks like when it's shorter.",
     tasks: [],
@@ -37,6 +39,7 @@ interface Task {
 
 interface Project {
   id: number;
+  editMode: boolean;
   title: string;
   details?: string;
   tasks?: Task[];
@@ -48,6 +51,18 @@ export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<ProjectList>(dummyData);
 
+  const onEditHandler = (id: number, editState: boolean) => {
+    setProjectData((currProjects): ProjectList => {
+      return currProjects.map((project) => {
+        if (project.id === id) {
+          project.editMode = editState;
+        }
+
+        return project;
+      });
+    });
+  };
+
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
@@ -55,7 +70,6 @@ export const ProjectList = (): JSX.Element => {
     const title = String(input.get("project-title-input"));
     const details = String(input.get("project-details-input"));
     e.currentTarget.reset();
-    setOpenInput(false);
 
     setProjectData((currProjects): ProjectList => {
       let newId: number = 0;
@@ -66,37 +80,102 @@ export const ProjectList = (): JSX.Element => {
 
       return [
         ...currProjects,
-        { id: newId, title: title, details: details, tasks: [] },
+        {
+          id: newId,
+          editMode: false,
+          title: title,
+          details: details,
+          tasks: [],
+        },
       ];
     });
   };
 
   const projectList = projectData.map((project) => {
-    return (
-      <Paper
-        key={project.id}
-        variant="outlined"
-        sx={{
-          paddingLeft: 2,
-          paddingRight: 1,
-          paddingTop: 1,
-          paddingBottom: 1,
-          marginBottom: 1,
-        }}
-      >
-        <Stack direction="row" spacing={1}>
-          <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
-            {project.title}
-          </Typography>
-          <div>
-            <Button sx={{ maxWidth: 45, minWidth: 0 }}>
-              <MoreHorizIcon />
-            </Button>
-          </div>
-        </Stack>
-        <Typography>{project.details}</Typography>
-      </Paper>
-    );
+    if (project.editMode) {
+      return (
+        <Paper
+          key={project.id}
+          variant="outlined"
+          sx={{
+            paddingLeft: 1,
+            paddingRight: 1,
+            paddingTop: 1,
+            paddingBottom: 1,
+            marginBottom: 1,
+          }}
+        >
+          <TextField
+            sx={{ marginBottom: 1 }}
+            required
+            fullWidth
+            hiddenLabel
+            defaultValue={project.title}
+            variant="outlined"
+            autoComplete="off"
+            name="project-title-edit"
+            id="project-title-edit"
+          />
+          <TextField
+            fullWidth
+            hiddenLabel
+            defaultValue={project.details}
+            variant="outlined"
+            name="project-details-edit"
+            id="project-details-edit"
+            multiline
+            rows={3}
+          />
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            spacing={2}
+            mt={2}
+            width="100%"
+          >
+            <Button color="error">Delete</Button>
+            <Stack direction="row" spacing={1}>
+              <Button
+                variant="outlined"
+                onClick={() => onEditHandler(project.id, false)}
+              >
+                Cancel
+              </Button>
+              <Button variant="contained">Save</Button>
+            </Stack>
+          </Stack>
+        </Paper>
+      );
+    } else {
+      return (
+        <Paper
+          key={project.id}
+          variant="outlined"
+          sx={{
+            paddingLeft: 2,
+            paddingRight: 1,
+            paddingTop: 1,
+            paddingBottom: 1,
+            marginBottom: 1,
+          }}
+        >
+          <Stack direction="row" spacing={1}>
+            <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
+              {project.title}
+            </Typography>
+            <div>
+              <Button
+                sx={{ maxWidth: 45, minWidth: 0 }}
+                onClick={() => onEditHandler(project.id, true)}
+              >
+                <MoreHorizIcon />
+              </Button>
+            </div>
+          </Stack>
+          <Typography>{project.details}</Typography>
+        </Paper>
+      );
+    }
   });
 
   return (
