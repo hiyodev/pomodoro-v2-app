@@ -13,7 +13,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useState } from "react";
 
 // Dummy data for testing
-const projectData = [
+const dummyData = [
   {
     id: 1,
     title: "Test Title goes here and many more title crap goes here",
@@ -29,8 +29,24 @@ const projectData = [
   },
 ];
 
+interface Task {
+  id: number;
+  completed: boolean;
+  details: string;
+}
+
+interface Project {
+  id: number;
+  title: string;
+  details?: string;
+  tasks?: Task[];
+}
+
+interface ProjectList extends Array<Project> {}
+
 export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
+  const [projectData, setProjectData] = useState<ProjectList>(dummyData);
 
   const projectList = projectData.map((project) => {
     return (
