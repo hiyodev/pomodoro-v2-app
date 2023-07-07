@@ -49,7 +49,12 @@ interface ProjectList extends Array<Project> {}
 
 export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
-  const [projectData, setProjectData] = useState<ProjectList>(dummyData);
+
+  // Note: Don't forget to prevent data being referenced by memory for all the cards
+  // IE: If card 1 changes, so will card 2 and card 3
+  const [projectData, setProjectData] = useState<ProjectList>(
+    JSON.parse(JSON.stringify(dummyData))
+  );
 
   const onEditModeHandler = (id: number, editState: boolean): void => {
     setProjectData((currProjects): ProjectList => {
