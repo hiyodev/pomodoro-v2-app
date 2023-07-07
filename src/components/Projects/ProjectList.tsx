@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { styled } from "styled-components";
 import { useState } from "react";
 
 // Dummy data for testing
@@ -30,10 +29,6 @@ const projectData = [
   },
 ];
 
-const RightPaddingStyled = styled.div`
-  padding-right: 5px;
-`;
-
 export const ProjectList = (): JSX.Element => {
   const [openInput, setOpenInput] = useState<boolean>(false);
 
@@ -44,6 +39,7 @@ export const ProjectList = (): JSX.Element => {
         variant="outlined"
         sx={{
           paddingLeft: 2,
+          paddingRight: 1,
           paddingTop: 1,
           paddingBottom: 1,
           marginBottom: 1,
@@ -53,11 +49,11 @@ export const ProjectList = (): JSX.Element => {
           <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
             {project.title}
           </Typography>
-          <RightPaddingStyled>
-            <Button>
+          <div>
+            <Button sx={{ maxWidth: 45, minWidth: 0 }}>
               <MoreHorizIcon />
             </Button>
-          </RightPaddingStyled>
+          </div>
         </Stack>
         <Typography>{project.details}</Typography>
       </Paper>
@@ -75,7 +71,9 @@ export const ProjectList = (): JSX.Element => {
         >
           {projectList}
           {!openInput && (
-            <Button onClick={() => setOpenInput(true)}>Add Project</Button>
+            <Button variant="outlined" onClick={() => setOpenInput(true)}>
+              Add Project
+            </Button>
           )}
           {openInput && (
             <Grow in={openInput}>
