@@ -1,10 +1,4 @@
-interface Timer {
-  duration: number;
-  timeNow: number;
-  started: boolean;
-}
-
-interface TimerState extends Array<Timer> {}
+import { TimerState } from "../redux/timerSlice";
 
 export const loadState = () => {
   try {

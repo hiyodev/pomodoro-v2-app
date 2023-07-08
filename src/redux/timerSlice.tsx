@@ -1,17 +1,22 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { loadState } from "../localStorage/localStorage";
 
-interface Timer {
+export interface Timer {
   duration: number;
   timeNow: number;
   started: boolean;
 }
 
-interface TimerState extends Array<Timer> {}
+export interface TimerState extends Array<Timer> {}
 
 const initialState: TimerState = loadState() || [
   {
     duration: 1500,
+    timeNow: 0,
+    started: false,
+  },
+  {
+    duration: 3600,
     timeNow: 0,
     started: false,
   },
