@@ -9,27 +9,12 @@ import {
 } from "@mui/material";
 import { ProjectList } from "../Projects/ProjectList";
 import { secondsIntoTimer } from "../../utils/utils";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Redux
 import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { updateTimer, toggleTimer, stopTimer } from "../../redux/timerSlice";
-
-/*
-Store Project List and Task List in Redux
-Store timeNow so that if user closes browser and 
-comes back 5 mins later, it will reflect the correct time
-
-userTimeData = {
-
-};
-
-userInputData = {
-
-};
-
-*/
 
 interface Props {
   title: string;
