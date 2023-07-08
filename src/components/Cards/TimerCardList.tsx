@@ -7,33 +7,13 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { EffectCoverflow } from "swiper/modules";
 
-import "./styles.css";
+import "./swiperStyles.css";
 import { useState, useEffect } from "react";
-
-const userData = {
-  selectedCard: 0,
-  timeData: [
-    {
-      id: 1,
-      cardTitle: "Card 1111",
-      timeDuration: 3600,
-    },
-    // {
-    //   id: 2,
-    //   cardTitle: "Card 22222",
-    //   timeDuration: 3600,
-    // },
-    // {
-    //   id: 3,
-    //   cardTitle: "Card 33333",
-    //   timeDuration: 3600,
-    // },
-  ],
-};
-
-// MAJOR BUG: Sometimes cardID is null resulting in cards being bugged on restart for some reason...
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 export const TimerCardList = (): JSX.Element => {
+  const cards = useSelector((state: RootState) => state.timer.cards);
   const [selectedCard, setSelectedCard] = useState<string | number>(0);
   const [sliderInstance, setSliderInstance] = useState<SwiperClass | null>(
     null
@@ -49,9 +29,9 @@ export const TimerCardList = (): JSX.Element => {
     localStorage.setItem("cardID", JSON.stringify(selectedCard));
   }, [selectedCard]);
 
-  const cardData = userData.timeData.map((currCard, index) => (
+  const cardData = cards.map((currCard, index) => (
     <SwiperSlide key={currCard.id}>
-      <TimerCard cardId={index} title={currCard.cardTitle} />
+      <TimerCard cardId={index} title={currCard.title} />
     </SwiperSlide>
   ));
 

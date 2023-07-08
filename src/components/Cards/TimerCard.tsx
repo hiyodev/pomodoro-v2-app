@@ -22,9 +22,14 @@ interface Props {
 }
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
-  const timer = useSelector((state: RootState) => state.timer[cardId].duration);
+  const timer = useSelector(
+    (state: RootState) => state.timer.cards[cardId].currDuration
+  );
+  const newTimer = useSelector(
+    (state: RootState) => state.timer.cards[cardId].newDuration
+  );
   const timerStarted = useSelector(
-    (state: RootState) => state.timer[cardId].started
+    (state: RootState) => state.timer.cards[cardId].started
   );
   const dispatch = useDispatch();
 
@@ -56,7 +61,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
   };
 
   const onTimerReset = () => {
-    dispatch(updateTimer({ id: cardId, time: 1500 }));
+    dispatch(updateTimer({ id: cardId, time: newTimer }));
     dispatch(stopTimer(cardId));
   };
 
