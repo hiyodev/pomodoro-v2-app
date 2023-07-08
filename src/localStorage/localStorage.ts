@@ -1,8 +1,10 @@
-interface TimerState {
+interface Timer {
   duration: number;
   timeNow: number;
   started: boolean;
 }
+
+interface TimerState extends Array<Timer> {}
 
 export const loadState = () => {
   try {

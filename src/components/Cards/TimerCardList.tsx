@@ -18,16 +18,16 @@ const userData = {
       cardTitle: "Card 1111",
       timeDuration: 3600,
     },
-    {
-      id: 2,
-      cardTitle: "Card 22222",
-      timeDuration: 3600,
-    },
-    {
-      id: 3,
-      cardTitle: "Card 33333",
-      timeDuration: 3600,
-    },
+    // {
+    //   id: 2,
+    //   cardTitle: "Card 22222",
+    //   timeDuration: 3600,
+    // },
+    // {
+    //   id: 3,
+    //   cardTitle: "Card 33333",
+    //   timeDuration: 3600,
+    // },
   ],
 };
 
@@ -52,9 +52,9 @@ export const TimerCardList = (): JSX.Element => {
     localStorage.setItem("cardID", JSON.stringify(selectedCard));
   }, [selectedCard]);
 
-  const cardData = userData.timeData.map((currCard) => (
+  const cardData = userData.timeData.map((currCard, index) => (
     <SwiperSlide key={currCard.id}>
-      <TimerCard title={currCard.cardTitle} />
+      <TimerCard cardId={index} title={currCard.cardTitle} />
     </SwiperSlide>
   ));
 

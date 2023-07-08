@@ -17,15 +17,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateTimer, toggleTimer, stopTimer } from "../../redux/timerSlice";
 
 interface Props {
+  cardId: number;
   title: string;
 }
 
-export const TimerCard = ({ title }: Props): JSX.Element => {
-  const timer = useSelector((state: RootState) => state.timer.duration);
-  const timerStarted = useSelector((state: RootState) => state.timer.started);
+export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
+  const timer = useSelector((state: RootState) => state.timer[cardId].duration);
+  const timerStarted = useSelector(
+    (state: RootState) => state.timer[cardId].started
+  );
   const dispatch = useDispatch();
-
-  console.log("ReduxTIME", timer);
 
   useEffect(() => {
     let timeNow: number = 0;
@@ -36,7 +37,10 @@ export const TimerCard = ({ title }: Props): JSX.Element => {
       timeInterval = setInterval(
         () =>
           dispatch(
-            updateTimer(timer - Math.floor((Date.now() - timeNow) / 1000))
+            updateTimer({
+              id: cardId,
+              time: timer - Math.floor((Date.now() - timeNow) / 1000),
+            })
           ),
         1000
       );
@@ -48,12 +52,12 @@ export const TimerCard = ({ title }: Props): JSX.Element => {
   }, [timerStarted]);
 
   const onTimerStateChange = () => {
-    dispatch(toggleTimer());
+    dispatch(toggleTimer(cardId));
   };
 
   const onTimerReset = () => {
-    dispatch(updateTimer(1500));
-    dispatch(stopTimer());
+    dispatch(updateTimer({ id: cardId, time: 1500 }));
+    dispatch(stopTimer(cardId));
   };
 
   return (
