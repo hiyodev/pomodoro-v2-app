@@ -57,8 +57,12 @@ export const timerSlice = createSlice({
       state.cards[action.payload].started =
         !state.cards[action.payload].started;
     },
+    switchCard: (state, action: PayloadAction<number>) => {
+      state.selectedCard = action.payload;
+    },
   },
 });
 
-export const { updateTimer, stopTimer, toggleTimer } = timerSlice.actions;
+export const { updateTimer, stopTimer, toggleTimer, switchCard } =
+  timerSlice.actions;
 export default timerSlice.reducer;

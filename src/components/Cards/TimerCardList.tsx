@@ -3,18 +3,25 @@ import { TimerCard } from "./TimerCard";
 // Swiper Import
 import { Swiper, SwiperSlide, SwiperClass } from "swiper/react";
 import "swiper/css";
+import "./swiperStyles.css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { EffectCoverflow } from "swiper/modules";
 
-import "./swiperStyles.css";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+
+// Redux
 import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { switchCard } from "../../redux/timerSlice";
 
 export const TimerCardList = (): JSX.Element => {
   const cards = useSelector((state: RootState) => state.timer.cards);
-  const [selectedCard, setSelectedCard] = useState<string | number>(0);
+  const selectedCard = useSelector(
+    (state: RootState) => state.timer.selectedCard
+  );
+  const dispatch = useDispatch();
+
   const [sliderInstance, setSliderInstance] = useState<SwiperClass | null>(
     null
   );
@@ -24,10 +31,6 @@ export const TimerCardList = (): JSX.Element => {
       sliderInstance.slideTo(Number(selectedCard));
     }
   }, [sliderInstance]);
-
-  useEffect(() => {
-    localStorage.setItem("cardID", JSON.stringify(selectedCard));
-  }, [selectedCard]);
 
   const cardData = cards.map((currCard, index) => (
     <SwiperSlide key={currCard.id}>
@@ -39,7 +42,7 @@ export const TimerCardList = (): JSX.Element => {
     <>
       <Swiper
         onInit={(e) => setSliderInstance(e)}
-        onSlideChange={(e) => setSelectedCard(e.activeIndex)}
+        onSlideChange={(e) => dispatch(switchCard(e.activeIndex))}
         effect={"coverflow"}
         centeredSlides={true}
         slidesPerView={"auto"}
