@@ -18,16 +18,16 @@ const userData = {
       cardTitle: "Card 1111",
       timeDuration: 3600,
     },
-    {
-      id: 2,
-      cardTitle: "Card 22222",
-      timeDuration: 3600,
-    },
-    {
-      id: 3,
-      cardTitle: "Card 33333",
-      timeDuration: 3600,
-    },
+    // {
+    //   id: 2,
+    //   cardTitle: "Card 22222",
+    //   timeDuration: 3600,
+    // },
+    // {
+    //   id: 3,
+    //   cardTitle: "Card 33333",
+    //   timeDuration: 3600,
+    // },
   ],
 };
 
@@ -35,7 +35,8 @@ const userData = {
 
 export const TimerCardList = (): JSX.Element => {
   const [selectedCard, setSelectedCard] = useState<string | number>(
-    localStorage.getItem("cardID") || 0
+    0
+    //localStorage.getItem("cardID") || 0
   );
   const [sliderInstance, setSliderInstance] = useState<SwiperClass | null>(
     null

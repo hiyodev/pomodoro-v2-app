@@ -11,6 +11,11 @@ import { ProjectList } from "../Projects/ProjectList";
 import { secondsIntoTimer } from "../../utils/utils";
 import { useEffect, useState } from "react";
 
+// Redux
+import type { RootState } from "../../redux/store";
+import { useSelector, useDispatch } from "react-redux";
+import { updateTimer } from "../../redux/timerSlice";
+
 /*
 Store Project List and Task List in Redux
 Store timeNow so that if user closes browser and 
@@ -31,8 +36,12 @@ interface Props {
 }
 
 export const TimerCard = ({ title }: Props): JSX.Element => {
+  const timer = useSelector((state: RootState) => state.timer.duration);
+  const dispatch = useDispatch();
+
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
-  const [timerDuration, setTimerDuration] = useState<number>(1500);
+
+  console.log("ReduxTIME", timer);
 
   useEffect(() => {
     let timeNow: number = 0;
@@ -42,14 +51,16 @@ export const TimerCard = ({ title }: Props): JSX.Element => {
       timeNow = Date.now();
       timeInterval = setInterval(
         () =>
-          setTimerDuration(
-            timerDuration - Math.floor((Date.now() - timeNow) / 1000)
+          dispatch(
+            updateTimer(timer - Math.floor((Date.now() - timeNow) / 1000))
           ),
         1000
       );
     }
 
-    return () => clearInterval(timeInterval);
+    return () => {
+      clearInterval(timeInterval);
+    };
   }, [timerStarted]);
 
   const onTimerStateChange = () => {
@@ -57,7 +68,7 @@ export const TimerCard = ({ title }: Props): JSX.Element => {
   };
 
   const onTimerReset = () => {
-    setTimerDuration(1500);
+    dispatch(updateTimer(1500));
     setTimerStarted(false);
   };
 
@@ -82,9 +93,7 @@ export const TimerCard = ({ title }: Props): JSX.Element => {
             <Button>Focus</Button>
             <Button>Break</Button>
           </Stack>
-          <Typography variant="h1">
-            {secondsIntoTimer(timerDuration)}
-          </Typography>
+          <Typography variant="h1">{secondsIntoTimer(timer)}</Typography>
           <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained" onClick={onTimerStateChange}>
               {timerStarted ? "Pause" : "Start"}
