@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 // Redux
 import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTimer } from "../../redux/timerSlice";
+import { updateTimer, toggleTimer, stopTimer } from "../../redux/timerSlice";
 
 /*
 Store Project List and Task List in Redux
@@ -37,9 +37,8 @@ interface Props {
 
 export const TimerCard = ({ title }: Props): JSX.Element => {
   const timer = useSelector((state: RootState) => state.timer.duration);
+  const timerStarted = useSelector((state: RootState) => state.timer.started);
   const dispatch = useDispatch();
-
-  const [timerStarted, setTimerStarted] = useState<boolean>(false);
 
   console.log("ReduxTIME", timer);
 
@@ -64,12 +63,12 @@ export const TimerCard = ({ title }: Props): JSX.Element => {
   }, [timerStarted]);
 
   const onTimerStateChange = () => {
-    setTimerStarted((prevState) => !prevState);
+    dispatch(toggleTimer());
   };
 
   const onTimerReset = () => {
     dispatch(updateTimer(1500));
-    setTimerStarted(false);
+    dispatch(stopTimer());
   };
 
   return (
