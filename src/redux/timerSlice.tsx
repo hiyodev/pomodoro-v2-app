@@ -13,7 +13,7 @@ interface Timer {
     newBreakDuration: number;
     timeNow: number;
   };
-  projects: ProjectArray;
+  projects: Array<Project>;
 }
 
 interface Project {
@@ -23,13 +23,9 @@ interface Project {
   details: string;
 }
 
-interface ProjectArray extends Array<Project> {}
-
-interface TimerArray extends Array<Timer> {}
-
 export interface TimerState {
   selectedCard: number;
-  cards: TimerArray;
+  cards: Array<Timer>;
 }
 
 const initialState: TimerState = loadState() || {
