@@ -24,10 +24,10 @@ interface Props {
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
   const timer = useSelector(
-    (state: RootState) => state.timer.cards[cardId].currDuration
+    (state: RootState) => state.timer.cards[cardId].focusDuration
   );
   const newTimer = useSelector(
-    (state: RootState) => state.timer.cards[cardId].newDuration
+    (state: RootState) => state.timer.cards[cardId].newFocusDuration
   );
   const timerStarted = useSelector(
     (state: RootState) => state.timer.cards[cardId].started
