@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { updateTimer, toggleTimer, stopTimer } from "../../redux/timerSlice";
+import SettingsModal from "../Modal/SettingsModal";
 
 interface Props {
   cardId: number;
@@ -94,6 +95,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             <Button variant="outlined" onClick={onTimerReset}>
               Reset
             </Button>
+            <SettingsModal cardId={cardId} />
           </Stack>
         </CardContent>
       </Card>

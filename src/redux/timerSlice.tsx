@@ -8,7 +8,17 @@ interface Timer {
   newDuration: number;
   timeNow: number;
   started: boolean;
+  projects: ProjectArray;
 }
+
+interface Project {
+  id: number;
+  editMode: boolean;
+  title: string;
+  details: string;
+}
+
+interface ProjectArray extends Array<Project> {}
 
 interface TimerArray extends Array<Timer> {}
 
@@ -22,11 +32,28 @@ const initialState: TimerState = loadState() || {
   cards: [
     {
       id: 0,
-      title: "Card 1",
+      title: "Change this in Settings",
       currDuration: 1500,
       newDuration: 1500,
       timeNow: 0,
       started: false,
+      projects: [
+        {
+          id: 1,
+          editMode: false,
+          title: "Test Title goes here and many more title crap goes here",
+          details:
+            "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
+          tasks: [],
+        },
+        {
+          id: 2,
+          editMode: false,
+          title: "This is another test",
+          details: "Let's see how this looks like when it's shorter.",
+          tasks: [],
+        },
+      ],
     },
     {
       id: 1,
@@ -35,6 +62,7 @@ const initialState: TimerState = loadState() || {
       newDuration: 3600,
       timeNow: 0,
       started: false,
+      projects: [],
     },
   ],
 };
