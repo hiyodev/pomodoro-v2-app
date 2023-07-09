@@ -4,10 +4,14 @@ import { loadState } from "../localStorage/localStorage";
 interface Timer {
   id: number;
   title: string;
-  focusDuration: number;
-  newFocusDuration: number;
-  timeNow: number;
-  started: boolean;
+  timer: {
+    started: boolean;
+    focusDuration: number;
+    newFocusDuration: number;
+    breakDuration: number;
+    newBreakDuration: number;
+    timeNow: number;
+  };
   projects: ProjectArray;
 }
 
@@ -33,12 +37,14 @@ const initialState: TimerState = loadState() || {
     {
       id: 0,
       title: "Change this in Settings",
-      focusDuration: 1500,
-      newFocusDuration: 1500,
-      breakDuration: 300,
-      newBreakDuration: 300,
-      timeNow: 0,
-      started: false,
+      timer: {
+        started: false,
+        focusDuration: 1500,
+        newFocusDuration: 1500,
+        breakDuration: 300,
+        newBreakDuration: 300,
+        timeNow: 0,
+      },
       projects: [
         {
           id: 1,
@@ -60,12 +66,14 @@ const initialState: TimerState = loadState() || {
     {
       id: 1,
       title: "Card 2",
-      focusDuration: 3600,
-      newFocusDuration: 3600,
-      breakDuration: 600,
-      newBreakDuration: 600,
-      timeNow: 0,
-      started: false,
+      timer: {
+        started: false,
+        focusDuration: 3600,
+        newFocusDuration: 3600,
+        breakDuration: 600,
+        newBreakDuration: 600,
+        timeNow: 0,
+      },
       projects: [],
     },
   ],
@@ -80,14 +88,14 @@ export const timerSlice = createSlice({
       action: PayloadAction<{ id: number; time: number }>
     ) => {
       const { id, time } = action.payload;
-      state.cards[id].focusDuration = time;
+      state.cards[id].timer.focusDuration = time;
     },
     stopTimer: (state, action: PayloadAction<number>) => {
-      state.cards[action.payload].started = false;
+      state.cards[action.payload].timer.started = false;
     },
     toggleTimer: (state, action: PayloadAction<number>) => {
-      state.cards[action.payload].started =
-        !state.cards[action.payload].started;
+      state.cards[action.payload].timer.started =
+        !state.cards[action.payload].timer.started;
     },
     switchCard: (state, action: PayloadAction<number>) => {
       state.selectedCard = action.payload;

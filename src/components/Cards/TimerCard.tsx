@@ -23,14 +23,14 @@ interface Props {
 }
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
-  const timer = useSelector(
-    (state: RootState) => state.timer.cards[cardId].focusDuration
+  const focusTimer = useSelector(
+    (state: RootState) => state.timer.cards[cardId].timer.focusDuration
   );
-  const newTimer = useSelector(
-    (state: RootState) => state.timer.cards[cardId].newFocusDuration
+  const newFocusTimer = useSelector(
+    (state: RootState) => state.timer.cards[cardId].timer.newFocusDuration
   );
   const timerStarted = useSelector(
-    (state: RootState) => state.timer.cards[cardId].started
+    (state: RootState) => state.timer.cards[cardId].timer.started
   );
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
           dispatch(
             updateTimer({
               id: cardId,
-              time: timer - Math.floor((Date.now() - timeNow) / 1000),
+              time: focusTimer - Math.floor((Date.now() - timeNow) / 1000),
             })
           ),
         1000
@@ -62,7 +62,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
   };
 
   const onTimerReset = () => {
-    dispatch(updateTimer({ id: cardId, time: newTimer }));
+    dispatch(updateTimer({ id: cardId, time: newFocusTimer }));
     dispatch(stopTimer(cardId));
   };
 
@@ -87,7 +87,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             <Button>Focus</Button>
             <Button>Break</Button>
           </Stack>
-          <Typography variant="h1">{secondsIntoTimer(timer)}</Typography>
+          <Typography variant="h1">{secondsIntoTimer(focusTimer)}</Typography>
           <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained" onClick={onTimerStateChange}>
               {timerStarted ? "Pause" : "Start"}
