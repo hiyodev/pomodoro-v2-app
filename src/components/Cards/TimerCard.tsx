@@ -14,7 +14,13 @@ import { useEffect } from "react";
 // Redux
 import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTimer, toggleTimer, stopTimer } from "../../redux/timerSlice";
+import {
+  updateTimer,
+  toggleTimerState,
+  toggleTimerMode,
+  stopTimer,
+  resetTimer,
+} from "../../redux/timerSlice";
 import SettingsModal from "../Modal/SettingsModal";
 
 interface Props {
@@ -23,14 +29,8 @@ interface Props {
 }
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
-  const focusTimer = useSelector(
-    (state: RootState) => state.timer.cards[cardId].timer.focusDuration
-  );
-  const newFocusTimer = useSelector(
-    (state: RootState) => state.timer.cards[cardId].timer.newFocusDuration
-  );
-  const timerStarted = useSelector(
-    (state: RootState) => state.timer.cards[cardId].timer.started
+  const { type, started, focusDuration, breakDuration } = useSelector(
+    (state: RootState) => state.timer.cards[cardId].timer
   );
   const dispatch = useDispatch();
 
@@ -38,14 +38,16 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
     let timeNow: number = 0;
     let timeInterval: number | undefined;
 
-    if (timerStarted) {
+    if (started) {
       timeNow = Date.now();
       timeInterval = setInterval(
         () =>
           dispatch(
             updateTimer({
               id: cardId,
-              time: focusTimer - Math.floor((Date.now() - timeNow) / 1000),
+              time:
+                (type === "focus" ? focusDuration : breakDuration) -
+                Math.floor((Date.now() - timeNow) / 1000),
             })
           ),
         1000
@@ -55,15 +57,21 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
     return () => {
       clearInterval(timeInterval);
     };
-  }, [timerStarted]);
+  }, [started]);
 
-  const onTimerStateChange = () => {
-    dispatch(toggleTimer(cardId));
+  const onTimerStateChange = (): void => {
+    dispatch(toggleTimerState(cardId));
   };
 
-  const onTimerReset = () => {
-    dispatch(updateTimer({ id: cardId, time: newFocusTimer }));
+  const onTimerReset = (): void => {
+    dispatch(resetTimer(cardId));
     dispatch(stopTimer(cardId));
+  };
+
+  const onTimerModeChange = (type: "focus" | "break"): void => {
+    dispatch(stopTimer(cardId));
+    dispatch(resetTimer(cardId));
+    dispatch(toggleTimerMode({ id: cardId, mode: type }));
   };
 
   return (
@@ -84,13 +92,15 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             spacing={1}
             divider={<Divider orientation="vertical" flexItem />}
           >
-            <Button>Focus</Button>
-            <Button>Break</Button>
+            <Button onClick={() => onTimerModeChange("focus")}>Focus</Button>
+            <Button onClick={() => onTimerModeChange("break")}>Break</Button>
           </Stack>
-          <Typography variant="h1">{secondsIntoTimer(focusTimer)}</Typography>
+          <Typography variant="h1">
+            {secondsIntoTimer(type === "focus" ? focusDuration : breakDuration)}
+          </Typography>
           <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained" onClick={onTimerStateChange}>
-              {timerStarted ? "Pause" : "Start"}
+              {started ? "Pause" : "Start"}
             </Button>
             <Button variant="outlined" onClick={onTimerReset}>
               Reset

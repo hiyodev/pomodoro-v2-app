@@ -6,6 +6,7 @@ interface Timer {
   title: string;
   timer: {
     started: boolean;
+    type: "focus" | "break";
     focusDuration: number;
     newFocusDuration: number;
     breakDuration: number;
@@ -39,6 +40,7 @@ const initialState: TimerState = loadState() || {
       title: "Change this in Settings",
       timer: {
         started: false,
+        type: "focus",
         focusDuration: 1500,
         newFocusDuration: 1500,
         breakDuration: 300,
@@ -68,6 +70,7 @@ const initialState: TimerState = loadState() || {
       title: "Card 2",
       timer: {
         started: false,
+        type: "focus",
         focusDuration: 3600,
         newFocusDuration: 3600,
         breakDuration: 600,
@@ -88,14 +91,37 @@ export const timerSlice = createSlice({
       action: PayloadAction<{ id: number; time: number }>
     ) => {
       const { id, time } = action.payload;
-      state.cards[id].timer.focusDuration = time;
+
+      if (state.cards[id].timer.type === "focus") {
+        state.cards[id].timer.focusDuration = time;
+      } else {
+        state.cards[id].timer.breakDuration = time;
+      }
+    },
+    resetTimer: (state, action: PayloadAction<number>) => {
+      const id = action.payload;
+
+      if (state.cards[id].timer.type === "focus") {
+        state.cards[id].timer.focusDuration =
+          state.cards[id].timer.newFocusDuration;
+      } else {
+        state.cards[id].timer.breakDuration =
+          state.cards[id].timer.newBreakDuration;
+      }
     },
     stopTimer: (state, action: PayloadAction<number>) => {
       state.cards[action.payload].timer.started = false;
     },
-    toggleTimer: (state, action: PayloadAction<number>) => {
+    toggleTimerState: (state, action: PayloadAction<number>) => {
       state.cards[action.payload].timer.started =
         !state.cards[action.payload].timer.started;
+    },
+    toggleTimerMode: (
+      state,
+      action: PayloadAction<{ id: number; mode: "focus" | "break" }>
+    ) => {
+      const { id, mode } = action.payload;
+      state.cards[id].timer.type = mode;
     },
     switchCard: (state, action: PayloadAction<number>) => {
       state.selectedCard = action.payload;
@@ -112,8 +138,10 @@ export const timerSlice = createSlice({
 
 export const {
   updateTimer,
+  resetTimer,
   stopTimer,
-  toggleTimer,
+  toggleTimerState,
+  toggleTimerMode,
   switchCard,
   updateCardTitle,
 } = timerSlice.actions;
