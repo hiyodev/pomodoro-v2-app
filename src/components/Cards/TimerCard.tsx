@@ -15,11 +15,13 @@ import { useEffect } from "react";
 import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  updateTimer,
-  toggleTimerState,
-  toggleTimerMode,
   stopTimer,
   resetTimer,
+  setPomoTimer,
+  setShortBreakTimer,
+  setLongBreakTimer,
+  toggleTimerState,
+  changeTimerMode,
 } from "../../redux/timerSlice";
 import SettingsModal from "../Modal/SettingsModal";
 
@@ -29,10 +31,13 @@ interface Props {
 }
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
-  const { type, started, focusDuration, breakDuration } = useSelector(
+  const dispatch = useDispatch();
+  const { type, started } = useSelector(
     (state: RootState) => state.timer.cards[cardId].timer
   );
-  const dispatch = useDispatch();
+  const { pomodoro, shortBreak, longBreak } = useSelector(
+    (state: RootState) => state.timer.cards[cardId].timer
+  );
 
   useEffect(() => {
     let timeNow: number = 0;
@@ -40,18 +45,33 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
 
     if (started) {
       timeNow = Date.now();
-      timeInterval = setInterval(
-        () =>
+      timeInterval = setInterval(() => {
+        if (type === "pomodoro") {
           dispatch(
-            updateTimer({
+            setPomoTimer({
               id: cardId,
               time:
-                (type === "focus" ? focusDuration : breakDuration) -
-                Math.floor((Date.now() - timeNow) / 1000),
+                pomodoro.duration - Math.floor((Date.now() - timeNow) / 1000),
             })
-          ),
-        1000
-      );
+          );
+        } else if (type === "shortbreak") {
+          dispatch(
+            setShortBreakTimer({
+              id: cardId,
+              time:
+                shortBreak.duration - Math.floor((Date.now() - timeNow) / 1000),
+            })
+          );
+        } else if (type === "longbreak") {
+          dispatch(
+            setLongBreakTimer({
+              id: cardId,
+              time:
+                longBreak.duration - Math.floor((Date.now() - timeNow) / 1000),
+            })
+          );
+        }
+      }, 1000);
     }
 
     return () => {
@@ -68,10 +88,14 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
     dispatch(stopTimer(cardId));
   };
 
-  const onTimerModeChange = (type: "focus" | "break"): void => {
+  const onTimerModeChange = (
+    inputType: "pomodoro" | "shortbreak" | "longbreak"
+  ): void => {
+    if (type === inputType) return;
+
     dispatch(stopTimer(cardId));
     dispatch(resetTimer(cardId));
-    dispatch(toggleTimerMode({ id: cardId, mode: type }));
+    dispatch(changeTimerMode({ id: cardId, mode: inputType }));
   };
 
   return (
@@ -92,11 +116,35 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             spacing={1}
             divider={<Divider orientation="vertical" flexItem />}
           >
-            <Button onClick={() => onTimerModeChange("focus")}>Focus</Button>
-            <Button onClick={() => onTimerModeChange("break")}>Break</Button>
+            <Button
+              sx={{
+                fontWeight: type === "pomodoro" ? "bold" : "400",
+              }}
+              onClick={() => onTimerModeChange("pomodoro")}
+            >
+              Pomodoro
+            </Button>
+            <Button
+              sx={{
+                fontWeight: type === "shortbreak" ? "bold" : "400",
+              }}
+              onClick={() => onTimerModeChange("shortbreak")}
+            >
+              Short Break
+            </Button>
+            <Button
+              sx={{
+                fontWeight: type === "longbreak" ? "bold" : "400",
+              }}
+              onClick={() => onTimerModeChange("longbreak")}
+            >
+              Long Break
+            </Button>
           </Stack>
           <Typography variant="h1">
-            {secondsIntoTimer(type === "focus" ? focusDuration : breakDuration)}
+            {type === "pomodoro" && secondsIntoTimer(pomodoro.duration)}
+            {type === "shortbreak" && secondsIntoTimer(shortBreak.duration)}
+            {type === "longbreak" && secondsIntoTimer(longBreak.duration)}
           </Typography>
           <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained" onClick={onTimerStateChange}>
@@ -109,7 +157,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
           </Stack>
         </CardContent>
       </Card>
-      <ProjectList />
+      <ProjectList cardId={cardId} />
     </Box>
   );
 };

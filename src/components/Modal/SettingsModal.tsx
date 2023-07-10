@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Box,
   Button,
@@ -8,9 +7,13 @@ import {
   TextField,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
+
+// Redux
 import { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { updateCardTitle } from "../../redux/timerSlice";
+
+import { useState, FormEvent } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,14 +32,14 @@ interface Props {
 }
 
 export default function SettingsModal({ cardId }: Props) {
+  const dispatch = useDispatch();
   const cardTitle = useSelector(
     (state: RootState) => state.timer.cards[cardId].title
   );
-  const dispatch = useDispatch();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const input = new FormData(e.currentTarget);
