@@ -31,6 +31,7 @@ export interface TimerState {
   cards: TimerArray;
 }
 
+// Dummy Data, change once you add the "Add Card" functionality.
 const initialState: TimerState = loadState() || {
   selectedCard: 0,
   cards: [

@@ -31,14 +31,13 @@ interface Props {
 }
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const { type, started } = useSelector(
     (state: RootState) => state.timer.cards[cardId].timer
   );
   const { pomodoro, shortBreak, longBreak } = useSelector(
     (state: RootState) => state.timer.cards[cardId].timer
   );
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     let timeNow: number = 0;
