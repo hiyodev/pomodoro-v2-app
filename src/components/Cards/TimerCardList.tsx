@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 // Redux
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { switchCard } from "../../redux/timerSlice";
+import { switchTimerCard } from "../../redux/timerSlice";
 
 export const TimerCardList = (): JSX.Element => {
   const cards = useSelector((state: RootState) => state.timer.cards);
@@ -42,7 +42,7 @@ export const TimerCardList = (): JSX.Element => {
     <>
       <Swiper
         onInit={(e) => setSliderInstance(e)}
-        onSlideChange={(e) => dispatch(switchCard(e.activeIndex))}
+        onSlideChange={(e) => dispatch(switchTimerCard(e.activeIndex))}
         effect={"coverflow"}
         centeredSlides={true}
         slidesPerView={"auto"}

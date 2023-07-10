@@ -15,13 +15,13 @@ import { useEffect } from "react";
 import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  stopTimer,
+  resetTimer,
   setPomoTimer,
   setShortBreakTimer,
   setLongBreakTimer,
   toggleTimerState,
-  toggleTimerMode,
-  stopTimer,
-  resetTimer,
+  changeTimerMode,
 } from "../../redux/timerSlice";
 import SettingsModal from "../Modal/SettingsModal";
 
@@ -90,11 +90,13 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
   };
 
   const onTimerModeChange = (
-    type: "pomodoro" | "shortbreak" | "longbreak"
+    inputType: "pomodoro" | "shortbreak" | "longbreak"
   ): void => {
+    if (type === inputType) return;
+
     dispatch(stopTimer(cardId));
     dispatch(resetTimer(cardId));
-    dispatch(toggleTimerMode({ id: cardId, mode: type }));
+    dispatch(changeTimerMode({ id: cardId, mode: inputType }));
   };
 
   return (
@@ -115,13 +117,31 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             spacing={1}
             divider={<Divider orientation="vertical" flexItem />}
           >
-            <Button onClick={() => onTimerModeChange("pomodoro")}>
+            <Button
+              sx={{
+                fontWeight: type === "pomodoro" ? "bold" : "400",
+                border: type === "pomodoro" ? "1px solid" : "none",
+              }}
+              onClick={() => onTimerModeChange("pomodoro")}
+            >
               Pomodoro
             </Button>
-            <Button onClick={() => onTimerModeChange("shortbreak")}>
+            <Button
+              sx={{
+                fontWeight: type === "shortbreak" ? "bold" : "400",
+                border: type === "shortbreak" ? "1px solid" : "none",
+              }}
+              onClick={() => onTimerModeChange("shortbreak")}
+            >
               Short Break
             </Button>
-            <Button onClick={() => onTimerModeChange("longbreak")}>
+            <Button
+              sx={{
+                fontWeight: type === "longbreak" ? "bold" : "400",
+                border: type === "longbreak" ? "1px solid" : "none",
+              }}
+              onClick={() => onTimerModeChange("longbreak")}
+            >
               Long Break
             </Button>
           </Stack>

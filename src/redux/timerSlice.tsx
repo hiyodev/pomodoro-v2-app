@@ -63,6 +63,35 @@ const initialState: TimerState = loadState() || {
         },
       ],
     },
+    {
+      id: 1,
+      title: "Change this in Settings",
+      timer: {
+        started: false,
+        type: "pomodoro",
+        pomodoro: { duration: 3600, new: 3600 },
+        shortBreak: { duration: 700, new: 700 },
+        longBreak: { duration: 800, new: 800 },
+        timeNow: 0,
+      },
+      projects: [
+        {
+          id: 1,
+          editMode: false,
+          title: "Test Title goes here and many more title crap goes here",
+          details:
+            "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
+          tasks: [],
+        },
+        {
+          id: 2,
+          editMode: false,
+          title: "This is another test",
+          details: "Let's see how this looks like when it's shorter.",
+          tasks: [],
+        },
+      ],
+    },
   ],
 };
 
@@ -92,7 +121,6 @@ export const timerSlice = createSlice({
       const { id, time } = action.payload;
       state.cards[id].timer.longBreak.duration = time;
     },
-
     resetTimer: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       const { pomodoro, shortBreak, longBreak } = state.cards[id].timer;
@@ -109,7 +137,7 @@ export const timerSlice = createSlice({
       state.cards[action.payload].timer.started =
         !state.cards[action.payload].timer.started;
     },
-    toggleTimerMode: (
+    changeTimerMode: (
       state,
       action: PayloadAction<{
         id: number;
@@ -119,7 +147,7 @@ export const timerSlice = createSlice({
       const { id, mode } = action.payload;
       state.cards[id].timer.type = mode;
     },
-    switchCard: (state, action: PayloadAction<number>) => {
+    switchTimerCard: (state, action: PayloadAction<number>) => {
       state.selectedCard = action.payload;
     },
     updateCardTitle: (
@@ -133,14 +161,14 @@ export const timerSlice = createSlice({
 });
 
 export const {
+  stopTimer,
+  resetTimer,
   setPomoTimer,
   setShortBreakTimer,
   setLongBreakTimer,
-  resetTimer,
-  stopTimer,
   toggleTimerState,
-  toggleTimerMode,
-  switchCard,
+  changeTimerMode,
+  switchTimerCard,
   updateCardTitle,
 } = timerSlice.actions;
 export default timerSlice.reducer;
