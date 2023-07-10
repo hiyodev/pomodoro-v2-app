@@ -125,15 +125,17 @@ export const timerSlice = createSlice({
       const id = action.payload;
       const { pomodoro, shortBreak, longBreak } = state.cards[id].timer;
 
-      // Reset all timer for current card
+      // Reset pomodoro, short-break, long-break timer for current card
       pomodoro.duration = pomodoro.new;
       shortBreak.duration = shortBreak.new;
       longBreak.duration = longBreak.new;
     },
     stopTimer: (state, action: PayloadAction<number>) => {
+      // Stop current Timer
       state.cards[action.payload].timer.started = false;
     },
     toggleTimerState: (state, action: PayloadAction<number>) => {
+      // Pause or Start Timer
       state.cards[action.payload].timer.started =
         !state.cards[action.payload].timer.started;
     },
