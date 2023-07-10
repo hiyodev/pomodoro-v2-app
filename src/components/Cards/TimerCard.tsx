@@ -16,6 +16,8 @@ import type { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setPomoTimer,
+  setShortBreakTimer,
+  setLongBreakTimer,
   toggleTimerState,
   toggleTimerMode,
   stopTimer,
@@ -51,6 +53,22 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
               id: cardId,
               time:
                 pomodoro.duration - Math.floor((Date.now() - timeNow) / 1000),
+            })
+          );
+        } else if (type === "shortbreak") {
+          dispatch(
+            setShortBreakTimer({
+              id: cardId,
+              time:
+                shortBreak.duration - Math.floor((Date.now() - timeNow) / 1000),
+            })
+          );
+        } else if (type === "longbreak") {
+          dispatch(
+            setLongBreakTimer({
+              id: cardId,
+              time:
+                longBreak.duration - Math.floor((Date.now() - timeNow) / 1000),
             })
           );
         }
@@ -109,6 +127,8 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
           </Stack>
           <Typography variant="h1">
             {type === "pomodoro" && secondsIntoTimer(pomodoro.duration)}
+            {type === "shortbreak" && secondsIntoTimer(shortBreak.duration)}
+            {type === "longbreak" && secondsIntoTimer(longBreak.duration)}
           </Typography>
           <Stack direction="row" spacing={2} mt={2}>
             <Button variant="contained" onClick={onTimerStateChange}>

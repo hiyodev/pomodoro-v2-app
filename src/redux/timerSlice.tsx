@@ -78,8 +78,20 @@ export const timerSlice = createSlice({
       state.cards[id].timer.pomodoro.duration = time;
     },
 
-    setShortBreakTimer: (state) => {},
-    setLongBreakTimer: (state) => {},
+    setShortBreakTimer: (
+      state,
+      action: PayloadAction<{ id: number; time: number }>
+    ) => {
+      const { id, time } = action.payload;
+      state.cards[id].timer.shortBreak.duration = time;
+    },
+    setLongBreakTimer: (
+      state,
+      action: PayloadAction<{ id: number; time: number }>
+    ) => {
+      const { id, time } = action.payload;
+      state.cards[id].timer.longBreak.duration = time;
+    },
 
     resetTimer: (state, action: PayloadAction<number>) => {
       const id = action.payload;
@@ -122,6 +134,8 @@ export const timerSlice = createSlice({
 
 export const {
   setPomoTimer,
+  setShortBreakTimer,
+  setLongBreakTimer,
   resetTimer,
   stopTimer,
   toggleTimerState,
