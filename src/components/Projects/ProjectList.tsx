@@ -13,69 +13,43 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
-// Dummy data for testing
-const dummyData = [
-  {
-    id: 1,
-    editMode: false,
-    title: "Test Title goes here and many more title crap goes here",
-    details:
-      "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
-    tasks: [],
-  },
-  {
-    id: 2,
-    editMode: false,
-    title: "This is another test",
-    details: "Let's see how this looks like when it's shorter.",
-    tasks: [],
-  },
-];
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { addProjectToList } from "../../redux/timerSlice";
+import { RootState } from "../../redux/store";
 
-interface Task {
-  id: number;
-  completed: boolean;
-  details: string;
+interface Props {
+  cardId: number;
 }
 
-interface Project {
-  id: number;
-  editMode: boolean;
-  title: string;
-  details?: string;
-  tasks?: Task[];
-}
-
-interface ProjectList extends Array<Project> {}
-
-export const ProjectList = (): JSX.Element => {
-  const [openInput, setOpenInput] = useState<boolean>(false);
-
-  // Note: Don't forget to prevent data being referenced by memory for all the cards
-  // IE: If card 1 changes, so will card 2 and card 3
-  const [projectData, setProjectData] = useState<ProjectList>(
-    JSON.parse(JSON.stringify(dummyData))
+export const ProjectList = ({ cardId }: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const projects = useSelector(
+    (state: RootState) => state.timer.cards[cardId].projects
   );
 
-  const onEditModeHandler = (id: number, editState: boolean): void => {
-    setProjectData((currProjects): ProjectList => {
-      return currProjects.map((project) => {
-        if (project.id === id) {
-          project.editMode = editState;
-        } else if (editState === true) {
-          // Flip others to false
-          project.editMode = false;
-        }
+  console.log(projects);
 
-        return project;
-      });
-    });
+  const [openInput, setOpenInput] = useState<boolean>(false);
+
+  const onEditModeHandler = (id: number, editState: boolean): void => {
+    // setProjectData((currProjects): ProjectList => {
+    //   return currProjects.map((project) => {
+    //     if (project.id === id) {
+    //       project.editMode = editState;
+    //     } else if (editState === true) {
+    //       // Flip others to false
+    //       project.editMode = false;
+    //     }
+    //     return project;
+    //   });
+    // });
   };
 
   const onDeleteHandler = (id: number): void => {
-    setProjectData((currProjects): ProjectList => {
-      return currProjects.filter((project) => project.id !== id);
-    });
+    // setProjectData((currProjects): ProjectList => {
+    //   return currProjects.filter((project) => project.id !== id);
+    // });
   };
 
   const onEditSaveHandler = (
@@ -88,16 +62,16 @@ export const ProjectList = (): JSX.Element => {
     const title = String(input.get("project-title-edit"));
     const details = String(input.get("project-details-edit"));
 
-    setProjectData((currProjects): ProjectList => {
-      return currProjects.map((project) => {
-        if (project.id === id) {
-          project.title = title;
-          project.details = details;
-          project.editMode = false;
-        }
-        return project;
-      });
-    });
+    // setProjectData((currProjects): ProjectList => {
+    //   return currProjects.map((project) => {
+    //     if (project.id === id) {
+    //       project.title = title;
+    //       project.details = details;
+    //       project.editMode = false;
+    //     }
+    //     return project;
+    //   });
+    // });
   };
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -108,26 +82,20 @@ export const ProjectList = (): JSX.Element => {
     const details = String(input.get("project-details-input"));
     e.currentTarget.reset();
 
-    setProjectData((currProjects): ProjectList => {
-      const newId: number =
-        currProjects.length > 0
-          ? currProjects[currProjects.length - 1].id + 1
-          : 0;
-
-      return [
-        ...currProjects,
-        {
-          id: newId,
+    dispatch(
+      addProjectToList({
+        id: cardId,
+        project: {
+          id: uuidv4(),
           editMode: false,
           title: title,
           details: details,
-          tasks: [],
         },
-      ];
-    });
+      })
+    );
   };
 
-  const projectList = projectData.map((project) => {
+  const projectList = projects.map((project) => {
     if (project.editMode) {
       return (
         <Paper

@@ -49,7 +49,7 @@ const initialState: TimerState = loadState() || {
         {
           id: 1,
           editMode: false,
-          title: "Test Title goes here and many more title crap goes here",
+          title: "Test33 Title goes here and many more title crap goes here",
           details:
             "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
           tasks: [],
@@ -78,7 +78,7 @@ const initialState: TimerState = loadState() || {
         {
           id: 1,
           editMode: false,
-          title: "Test Title goes here and many more title crap goes here",
+          title: "Test2 Title goes here and many more title crap goes here",
           details:
             "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
           tasks: [],
@@ -99,6 +99,7 @@ export const timerSlice = createSlice({
   name: "timer",
   initialState,
   reducers: {
+    // Timer Reducers
     setPomoTimer: (
       state,
       action: PayloadAction<{ id: number; time: number }>
@@ -106,7 +107,6 @@ export const timerSlice = createSlice({
       const { id, time } = action.payload;
       state.cards[id].timer.pomodoro.duration = time;
     },
-
     setShortBreakTimer: (
       state,
       action: PayloadAction<{ id: number; time: number }>
@@ -159,6 +159,14 @@ export const timerSlice = createSlice({
       const { id, newTitle } = action.payload;
       state.cards[id].title = newTitle;
     },
+    // Project Reducers
+    addProjectToList: (
+      state,
+      action: PayloadAction<{ id: number; project: Project }>
+    ) => {
+      const { id, project } = action.payload;
+      state.cards[id].projects.push(project);
+    },
   },
 });
 
@@ -172,5 +180,6 @@ export const {
   changeTimerMode,
   switchTimerCard,
   updateCardTitle,
+  addProjectToList,
 } = timerSlice.actions;
 export default timerSlice.reducer;

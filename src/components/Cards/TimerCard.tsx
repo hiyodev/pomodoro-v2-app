@@ -161,7 +161,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
           </Stack>
         </CardContent>
       </Card>
-      <ProjectList />
+      <ProjectList cardId={cardId} />
     </Box>
   );
 };
