@@ -120,7 +120,6 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             <Button
               sx={{
                 fontWeight: type === "pomodoro" ? "bold" : "400",
-                border: type === "pomodoro" ? "1px solid" : "none",
               }}
               onClick={() => onTimerModeChange("pomodoro")}
             >
@@ -129,7 +128,6 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             <Button
               sx={{
                 fontWeight: type === "shortbreak" ? "bold" : "400",
-                border: type === "shortbreak" ? "1px solid" : "none",
               }}
               onClick={() => onTimerModeChange("shortbreak")}
             >
@@ -138,7 +136,6 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             <Button
               sx={{
                 fontWeight: type === "longbreak" ? "bold" : "400",
-                border: type === "longbreak" ? "1px solid" : "none",
               }}
               onClick={() => onTimerModeChange("longbreak")}
             >

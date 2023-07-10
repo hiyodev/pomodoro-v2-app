@@ -15,7 +15,7 @@ import { useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { addProjectToList } from "../../redux/timerSlice";
+import { addProjectToList, delProjectFromList } from "../../redux/timerSlice";
 import { RootState } from "../../redux/store";
 
 interface Props {
@@ -46,7 +46,8 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
     // });
   };
 
-  const onDeleteHandler = (id: number): void => {
+  const onDeleteHandler = (projectId: string): void => {
+    dispatch(delProjectFromList({ cardId, projectId }));
     // setProjectData((currProjects): ProjectList => {
     //   return currProjects.filter((project) => project.id !== id);
     // });
@@ -95,12 +96,12 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
     );
   };
 
-  const projectList = projects.map((project) => {
+  const projectList = projects.map((project, index) => {
     if (project.editMode) {
       return (
         <Paper
           component="form"
-          onSubmit={(e) => onEditSaveHandler(e, project.id)}
+          onSubmit={(e) => onEditSaveHandler(e, index)}
           key={project.id}
           variant="outlined"
           sx={{
@@ -145,7 +146,7 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
             <Stack direction="row" spacing={1}>
               <Button
                 variant="outlined"
-                onClick={() => onEditModeHandler(project.id, false)}
+                onClick={() => onEditModeHandler(1, false)}
               >
                 Cancel
               </Button>
@@ -176,7 +177,7 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
             <div>
               <Button
                 sx={{ maxWidth: 45, minWidth: 0 }}
-                onClick={() => onEditModeHandler(project.id, true)}
+                onClick={() => onEditModeHandler(1, true)}
               >
                 <MoreHorizIcon />
               </Button>

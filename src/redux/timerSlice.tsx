@@ -16,7 +16,7 @@ interface Timer {
 }
 
 interface Project {
-  id: number;
+  id: string;
   editMode: boolean;
   title: string;
   details: string;
@@ -167,6 +167,15 @@ export const timerSlice = createSlice({
       const { id, project } = action.payload;
       state.cards[id].projects.push(project);
     },
+    delProjectFromList: (
+      state,
+      action: PayloadAction<{ cardId: number; projectId: string }>
+    ) => {
+      const { cardId, projectId } = action.payload;
+      state.cards[cardId].projects = state.cards[cardId].projects.filter(
+        (project) => project.id !== projectId
+      );
+    },
   },
 });
 
@@ -181,5 +190,6 @@ export const {
   switchTimerCard,
   updateCardTitle,
   addProjectToList,
+  delProjectFromList,
 } = timerSlice.actions;
 export default timerSlice.reducer;
