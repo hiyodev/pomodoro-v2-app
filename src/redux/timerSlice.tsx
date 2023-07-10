@@ -6,11 +6,10 @@ interface Timer {
   title: string;
   timer: {
     started: boolean;
-    type: "focus" | "break";
-    focusDuration: number;
-    newFocusDuration: number;
-    breakDuration: number;
-    newBreakDuration: number;
+    type: "pomodoro" | "shortbreak" | "longbreak";
+    pomodoro: { duration: number; new: number };
+    shortBreak: { duration: number; new: number };
+    longBreak: { duration: number; new: number };
     timeNow: number;
   };
   projects: ProjectArray;
@@ -40,11 +39,10 @@ const initialState: TimerState = loadState() || {
       title: "Change this in Settings",
       timer: {
         started: false,
-        type: "focus",
-        focusDuration: 1500,
-        newFocusDuration: 1500,
-        breakDuration: 300,
-        newBreakDuration: 300,
+        type: "pomodoro",
+        pomodoro: { duration: 1500, new: 1500 },
+        shortBreak: { duration: 300, new: 300 },
+        longBreak: { duration: 600, new: 600 },
         timeNow: 0,
       },
       projects: [
@@ -65,20 +63,6 @@ const initialState: TimerState = loadState() || {
         },
       ],
     },
-    {
-      id: 1,
-      title: "Card 2",
-      timer: {
-        started: false,
-        type: "focus",
-        focusDuration: 3600,
-        newFocusDuration: 3600,
-        breakDuration: 600,
-        newBreakDuration: 600,
-        timeNow: 0,
-      },
-      projects: [],
-    },
   ],
 };
 
@@ -86,28 +70,25 @@ export const timerSlice = createSlice({
   name: "timer",
   initialState,
   reducers: {
-    updateTimer: (
+    setPomoTimer: (
       state,
       action: PayloadAction<{ id: number; time: number }>
     ) => {
       const { id, time } = action.payload;
-
-      if (state.cards[id].timer.type === "focus") {
-        state.cards[id].timer.focusDuration = time;
-      } else {
-        state.cards[id].timer.breakDuration = time;
-      }
+      state.cards[id].timer.pomodoro.duration = time;
     },
+
+    setShortBreakTimer: (state) => {},
+    setLongBreakTimer: (state) => {},
+
     resetTimer: (state, action: PayloadAction<number>) => {
       const id = action.payload;
+      const { pomodoro, shortBreak, longBreak } = state.cards[id].timer;
 
-      if (state.cards[id].timer.type === "focus") {
-        state.cards[id].timer.focusDuration =
-          state.cards[id].timer.newFocusDuration;
-      } else {
-        state.cards[id].timer.breakDuration =
-          state.cards[id].timer.newBreakDuration;
-      }
+      // Reset all timer for current card
+      pomodoro.duration = pomodoro.new;
+      shortBreak.duration = shortBreak.new;
+      longBreak.duration = longBreak.new;
     },
     stopTimer: (state, action: PayloadAction<number>) => {
       state.cards[action.payload].timer.started = false;
@@ -118,7 +99,10 @@ export const timerSlice = createSlice({
     },
     toggleTimerMode: (
       state,
-      action: PayloadAction<{ id: number; mode: "focus" | "break" }>
+      action: PayloadAction<{
+        id: number;
+        mode: "pomodoro" | "shortbreak" | "longbreak";
+      }>
     ) => {
       const { id, mode } = action.payload;
       state.cards[id].timer.type = mode;
@@ -137,7 +121,7 @@ export const timerSlice = createSlice({
 });
 
 export const {
-  updateTimer,
+  setPomoTimer,
   resetTimer,
   stopTimer,
   toggleTimerState,
