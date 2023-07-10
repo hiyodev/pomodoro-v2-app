@@ -15,7 +15,12 @@ import { useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { addProjectToList, delProjectFromList } from "../../redux/timerSlice";
+import {
+  addProjectToList,
+  delProjectFromList,
+  updateProjectList,
+  setProjectEditMode,
+} from "../../redux/timerSlice";
 import { RootState } from "../../redux/store";
 
 interface Props {
@@ -32,30 +37,17 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
 
   const [openInput, setOpenInput] = useState<boolean>(false);
 
-  const onEditModeHandler = (id: number, editState: boolean): void => {
-    // setProjectData((currProjects): ProjectList => {
-    //   return currProjects.map((project) => {
-    //     if (project.id === id) {
-    //       project.editMode = editState;
-    //     } else if (editState === true) {
-    //       // Flip others to false
-    //       project.editMode = false;
-    //     }
-    //     return project;
-    //   });
-    // });
+  const onEditModeHandler = (projectId: string, editState: boolean): void => {
+    dispatch(setProjectEditMode({ cardId, projectId, editState }));
   };
 
   const onDeleteHandler = (projectId: string): void => {
     dispatch(delProjectFromList({ cardId, projectId }));
-    // setProjectData((currProjects): ProjectList => {
-    //   return currProjects.filter((project) => project.id !== id);
-    // });
   };
 
   const onEditSaveHandler = (
     e: React.FormEvent<HTMLFormElement>,
-    id: number
+    projectId: string
   ): void => {
     e.preventDefault();
 
@@ -63,16 +55,16 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
     const title = String(input.get("project-title-edit"));
     const details = String(input.get("project-details-edit"));
 
-    // setProjectData((currProjects): ProjectList => {
-    //   return currProjects.map((project) => {
-    //     if (project.id === id) {
-    //       project.title = title;
-    //       project.details = details;
-    //       project.editMode = false;
-    //     }
-    //     return project;
-    //   });
-    // });
+    dispatch(
+      updateProjectList({
+        cardId,
+        projectId,
+        project: {
+          title,
+          details,
+        },
+      })
+    );
   };
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -101,7 +93,7 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
       return (
         <Paper
           component="form"
-          onSubmit={(e) => onEditSaveHandler(e, index)}
+          onSubmit={(e) => onEditSaveHandler(e, project.id)}
           key={project.id}
           variant="outlined"
           sx={{
@@ -146,7 +138,7 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
             <Stack direction="row" spacing={1}>
               <Button
                 variant="outlined"
-                onClick={() => onEditModeHandler(1, false)}
+                onClick={() => onEditModeHandler(project.id, false)}
               >
                 Cancel
               </Button>
@@ -177,7 +169,7 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
             <div>
               <Button
                 sx={{ maxWidth: 45, minWidth: 0 }}
-                onClick={() => onEditModeHandler(1, true)}
+                onClick={() => onEditModeHandler(project.id, true)}
               >
                 <MoreHorizIcon />
               </Button>

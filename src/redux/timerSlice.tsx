@@ -176,6 +176,44 @@ export const timerSlice = createSlice({
         (project) => project.id !== projectId
       );
     },
+    updateProjectList: (
+      state,
+      action: PayloadAction<{
+        cardId: number;
+        projectId: string;
+        project: { title: string; details: string };
+      }>
+    ) => {
+      const { cardId, projectId, project } = action.payload;
+      const { title, details } = project;
+      state.cards[cardId].projects = state.cards[cardId].projects.map(
+        (project) =>
+          project.id === projectId
+            ? { ...project, title, details, editMode: false }
+            : project
+      );
+    },
+    setProjectEditMode: (
+      state,
+      action: PayloadAction<{
+        cardId: number;
+        projectId: string;
+        editState: boolean;
+      }>
+    ) => {
+      const { cardId, projectId, editState } = action.payload;
+      state.cards[cardId].projects = state.cards[cardId].projects.map(
+        (project) => {
+          if (projectId === project.id) {
+            project.editMode = editState;
+            return project;
+          }
+
+          project.editMode = false;
+          return project;
+        }
+      );
+    },
   },
 });
 
@@ -191,5 +229,7 @@ export const {
   updateCardTitle,
   addProjectToList,
   delProjectFromList,
+  updateProjectList,
+  setProjectEditMode,
 } = timerSlice.actions;
 export default timerSlice.reducer;
