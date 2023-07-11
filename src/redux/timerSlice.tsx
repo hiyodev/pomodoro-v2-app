@@ -28,7 +28,6 @@ export interface TimerState {
   cards: Array<Timer>;
 }
 
-// Dummy Data, change once you add the "Add Card" functionality.
 const initialState: TimerState = loadState() || {
   selectedCard: 0,
   cards: [
@@ -41,19 +40,6 @@ const initialState: TimerState = loadState() || {
         pomodoro: { duration: 1500, new: 1500 },
         shortBreak: { duration: 300, new: 300 },
         longBreak: { duration: 600, new: 600 },
-        timeNow: 0,
-      },
-      projects: [],
-    },
-    {
-      id: uuidv4(),
-      title: "Change this in Settings",
-      timer: {
-        started: false,
-        type: "pomodoro",
-        pomodoro: { duration: 3600, new: 3600 },
-        shortBreak: { duration: 700, new: 700 },
-        longBreak: { duration: 800, new: 800 },
         timeNow: 0,
       },
       projects: [],
