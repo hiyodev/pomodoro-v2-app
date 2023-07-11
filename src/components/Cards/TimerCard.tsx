@@ -6,6 +6,7 @@ import {
   Divider,
   Stack,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import { ProjectList } from "../Projects/ProjectList";
 import { secondsIntoTimer } from "../../utils/utils";
@@ -24,6 +25,7 @@ import {
   changeTimerMode,
 } from "../../redux/timerSlice";
 import { SettingsModal } from "../Modal/SettingsModal";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 interface Props {
   cardId: number;
@@ -147,12 +149,16 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
             {type === "longbreak" && secondsIntoTimer(longBreak.duration)}
           </Typography>
           <Stack direction="row" spacing={2} mt={2}>
-            <Button variant="contained" onClick={onTimerStateChange}>
-              {started ? "Pause" : "Start"}
-            </Button>
-            <Button variant="outlined" onClick={onTimerReset}>
-              Reset
-            </Button>
+            <Tooltip title="Start timer">
+              <Button variant="contained" onClick={onTimerStateChange}>
+                {started ? "Pause" : "Start"}
+              </Button>
+            </Tooltip>
+            <Tooltip title="Reset timers">
+              <Button sx={{ maxWidth: 45, minWidth: 0 }} onClick={onTimerReset}>
+                <RestartAltIcon />
+              </Button>
+            </Tooltip>
             <SettingsModal cardId={cardId} />
           </Stack>
         </CardContent>

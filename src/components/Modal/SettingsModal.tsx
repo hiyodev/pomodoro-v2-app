@@ -5,6 +5,7 @@ import {
   Modal,
   Stack,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { ConfirmationModal } from "./ConfirmationModal";
@@ -62,9 +63,14 @@ export const SettingsModal = ({ cardId }: Props) => {
 
   return (
     <div>
-      <Button sx={{ maxWidth: 45, minWidth: 0 }} onClick={() => setOpen(true)}>
-        <SettingsIcon />
-      </Button>
+      <Tooltip title="Card settings">
+        <Button
+          sx={{ maxWidth: 45, minWidth: 0 }}
+          onClick={() => setOpen(true)}
+        >
+          <SettingsIcon />
+        </Button>
+      </Tooltip>
       <Modal
         open={open}
         onClose={() => setOpen(true)}
