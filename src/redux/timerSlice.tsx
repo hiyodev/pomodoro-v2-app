@@ -156,6 +156,11 @@ export const timerSlice = createSlice({
       const { id, newTitle } = action.payload;
       state.cards[id].title = newTitle;
     },
+    deleteCard: (state, action: PayloadAction<number>) => {
+      state.cards = state.cards.filter(
+        (currCard) => currCard.id !== action.payload
+      );
+    },
     // Project Reducers
     addProjectToList: (
       state,
@@ -224,6 +229,7 @@ export const {
   changeTimerMode,
   switchTimerCard,
   updateCardTitle,
+  deleteCard,
   addProjectToList,
   delProjectFromList,
   updateProjectList,

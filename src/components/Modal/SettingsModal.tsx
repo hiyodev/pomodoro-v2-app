@@ -12,7 +12,7 @@ import { ConfirmationModal } from "./ConfirmationModal";
 // Redux
 import { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
-import { updateCardTitle } from "../../redux/timerSlice";
+import { updateCardTitle, deleteCard } from "../../redux/timerSlice";
 
 import { useState, FormEvent } from "react";
 
@@ -53,10 +53,11 @@ export const SettingsModal = ({ cardId }: Props) => {
   };
 
   const onConfirmHandler = () => {
+    dispatch(deleteCard(cardId));
+
     // Close confirmation and setting modals
     setModalState(false);
     setOpen(false);
-    console.log("YES");
   };
 
   return (
@@ -91,7 +92,7 @@ export const SettingsModal = ({ cardId }: Props) => {
             id="card-title-input"
           />
           <Stack>
-            {cardCount && (
+            {cardCount > 1 && (
               <Button color="warning" onClick={() => setModalState(true)}>
                 Delete This Card
               </Button>
