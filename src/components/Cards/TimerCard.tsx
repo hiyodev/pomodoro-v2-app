@@ -23,7 +23,7 @@ import {
   toggleTimerState,
   changeTimerMode,
 } from "../../redux/timerSlice";
-import SettingsModal from "../Modal/SettingsModal";
+import { SettingsModal } from "../Modal/SettingsModal";
 
 interface Props {
   cardId: number;

@@ -7,6 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 // Redux
 import { RootState } from "../../redux/store";
@@ -31,13 +32,15 @@ interface Props {
   cardId: number;
 }
 
-export default function SettingsModal({ cardId }: Props) {
+export const SettingsModal = ({ cardId }: Props) => {
   const dispatch = useDispatch();
   const cardTitle = useSelector(
     (state: RootState) => state.timer.cards[cardId].title
   );
+  const cardCount = useSelector((state: RootState) => state.timer.cards.length);
 
   const [open, setOpen] = useState(false);
+  const [dialogState, setDialogState] = useState<boolean>(false);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,6 +51,8 @@ export default function SettingsModal({ cardId }: Props) {
     dispatch(updateCardTitle({ id: cardId, newTitle: title }));
     setOpen(false);
   };
+
+  const onConfirmHandler = () => {};
 
   return (
     <div>
@@ -80,6 +85,14 @@ export default function SettingsModal({ cardId }: Props) {
             name="card-title-input"
             id="card-title-input"
           />
+          <Stack>
+            {cardCount && (
+              <ConfirmationModal
+                dialogState={dialogState}
+                setDialogState={setDialogState}
+              />
+            )}
+          </Stack>
           <Stack
             direction="row"
             spacing={2}
@@ -97,4 +110,4 @@ export default function SettingsModal({ cardId }: Props) {
       </Modal>
     </div>
   );
-}
+};
