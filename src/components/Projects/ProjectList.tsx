@@ -33,8 +33,6 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
     (state: RootState) => state.timer.cards[cardId].projects
   );
 
-  console.log(projects);
-
   const [openInput, setOpenInput] = useState<boolean>(false);
 
   const onEditModeHandler = (projectId: string, editState: boolean): void => {

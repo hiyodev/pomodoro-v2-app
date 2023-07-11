@@ -16,11 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { switchTimerCard } from "../../redux/timerSlice";
 
 export const TimerCardList = (): JSX.Element => {
+  const dispatch = useDispatch();
   const cards = useSelector((state: RootState) => state.timer.cards);
   const selectedCard = useSelector(
     (state: RootState) => state.timer.selectedCard
   );
-  const dispatch = useDispatch();
 
   const [sliderInstance, setSliderInstance] = useState<SwiperClass | null>(
     null
