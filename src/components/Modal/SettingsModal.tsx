@@ -40,7 +40,7 @@ export const SettingsModal = ({ cardId }: Props) => {
   const cardCount = useSelector((state: RootState) => state.timer.cards.length);
 
   const [open, setOpen] = useState(false);
-  const [dialogState, setDialogState] = useState<boolean>(false);
+  const [modalState, setModalState] = useState<boolean>(false);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +52,12 @@ export const SettingsModal = ({ cardId }: Props) => {
     setOpen(false);
   };
 
-  const onConfirmHandler = () => {};
+  const onConfirmHandler = () => {
+    // Close confirmation and setting modals
+    setModalState(false);
+    setOpen(false);
+    console.log("YES");
+  };
 
   return (
     <div>
@@ -87,11 +92,15 @@ export const SettingsModal = ({ cardId }: Props) => {
           />
           <Stack>
             {cardCount && (
-              <ConfirmationModal
-                dialogState={dialogState}
-                setDialogState={setDialogState}
-              />
+              <Button color="warning" onClick={() => setModalState(true)}>
+                Delete This Card
+              </Button>
             )}
+            <ConfirmationModal
+              modalState={modalState}
+              setModalState={setModalState}
+              onConfirmHandler={onConfirmHandler}
+            />
           </Stack>
           <Stack
             direction="row"
@@ -100,7 +109,7 @@ export const SettingsModal = ({ cardId }: Props) => {
             justifyContent={"space-between"}
           >
             <Button variant="outlined" onClick={() => setOpen(false)}>
-              Cancel
+              Close
             </Button>
             <Button variant="contained" type="submit">
               Save
