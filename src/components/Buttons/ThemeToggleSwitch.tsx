@@ -56,7 +56,7 @@ const ThemeToggleSwitch = ({ darkMode, setDarkMode }: Props): JSX.Element => {
   return (
     <FormGroup>
       <FormControlLabel
-        label=""
+        label="Toggle Theme"
         control={
           <MaterialUISwitch
             checked={darkMode}

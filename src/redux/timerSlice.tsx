@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { loadState } from "../localStorage/localStorage";
+import { v4 as uuidv4 } from "uuid";
 
 interface Timer {
-  id: number;
+  id: string;
   title: string;
   timer: {
     started: boolean;
@@ -32,7 +33,7 @@ const initialState: TimerState = loadState() || {
   selectedCard: 0,
   cards: [
     {
-      id: 0,
+      id: uuidv4(),
       title: "Change this in Settings",
       timer: {
         started: false,
@@ -42,26 +43,10 @@ const initialState: TimerState = loadState() || {
         longBreak: { duration: 600, new: 600 },
         timeNow: 0,
       },
-      projects: [
-        {
-          id: 1,
-          editMode: false,
-          title: "Test33 Title goes here and many more title crap goes here",
-          details:
-            "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
-          tasks: [],
-        },
-        {
-          id: 2,
-          editMode: false,
-          title: "This is another test",
-          details: "Let's see how this looks like when it's shorter.",
-          tasks: [],
-        },
-      ],
+      projects: [],
     },
     {
-      id: 1,
+      id: uuidv4(),
       title: "Change this in Settings",
       timer: {
         started: false,
@@ -71,23 +56,7 @@ const initialState: TimerState = loadState() || {
         longBreak: { duration: 800, new: 800 },
         timeNow: 0,
       },
-      projects: [
-        {
-          id: 1,
-          editMode: false,
-          title: "Test2 Title goes here and many more title crap goes here",
-          details:
-            "This is just a test to see how the details will look like and to see if it wraps properly and many more details.",
-          tasks: [],
-        },
-        {
-          id: 2,
-          editMode: false,
-          title: "This is another test",
-          details: "Let's see how this looks like when it's shorter.",
-          tasks: [],
-        },
-      ],
+      projects: [],
     },
   ],
 };
@@ -156,7 +125,22 @@ export const timerSlice = createSlice({
       const { id, newTitle } = action.payload;
       state.cards[id].title = newTitle;
     },
-    deleteCard: (state, action: PayloadAction<number>) => {
+    addCard: (state) => {
+      state.cards.push({
+        id: uuidv4(),
+        title: "",
+        timer: {
+          started: false,
+          type: "pomodoro",
+          pomodoro: { duration: 1500, new: 1500 },
+          shortBreak: { duration: 300, new: 300 },
+          longBreak: { duration: 600, new: 600 },
+          timeNow: 0,
+        },
+        projects: [],
+      });
+    },
+    deleteCard: (state, action: PayloadAction<string>) => {
       state.cards = state.cards.filter(
         (currCard) => currCard.id !== action.payload
       );
@@ -229,6 +213,7 @@ export const {
   changeTimerMode,
   switchTimerCard,
   updateCardTitle,
+  addCard,
   deleteCard,
   addProjectToList,
   delProjectFromList,

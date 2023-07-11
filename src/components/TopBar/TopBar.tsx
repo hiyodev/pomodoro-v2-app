@@ -2,7 +2,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   MenuItem,
   Menu,
   IconButton,
@@ -13,7 +12,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 
+// Redux
+import { useDispatch } from "react-redux";
+
 import { useState } from "react";
+import { addCard } from "../../redux/timerSlice";
 
 interface Props {
   darkMode: boolean;
@@ -21,6 +24,8 @@ interface Props {
 }
 
 export const TopBar = ({ darkMode, setDarkMode }: Props): JSX.Element => {
+  const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -69,9 +74,13 @@ export const TopBar = ({ darkMode, setDarkMode }: Props): JSX.Element => {
                 darkMode={darkMode}
                 setDarkMode={setDarkMode}
               />
-              <Typography sx={{ marginLeft: -2 }}>Toggle Theme</Typography>
             </MenuItem>
-            <MenuItem>
+            <MenuItem
+              onClick={() => {
+                dispatch(addCard());
+                handleClose();
+              }}
+            >
               <AddCardIcon color="inherit" />
               <Typography sx={{ marginLeft: 2 }}>Add Timer Card</Typography>
             </MenuItem>

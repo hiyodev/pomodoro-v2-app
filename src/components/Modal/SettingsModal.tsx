@@ -38,6 +38,9 @@ export const SettingsModal = ({ cardId }: Props) => {
   const cardTitle = useSelector(
     (state: RootState) => state.timer.cards[cardId].title
   );
+  const cardUUID = useSelector(
+    (state: RootState) => state.timer.cards[cardId].id
+  );
   const cardCount = useSelector((state: RootState) => state.timer.cards.length);
 
   const [open, setOpen] = useState(false);
@@ -54,7 +57,7 @@ export const SettingsModal = ({ cardId }: Props) => {
   };
 
   const onConfirmHandler = () => {
-    dispatch(deleteCard(cardId));
+    dispatch(deleteCard(cardUUID));
 
     // Close confirmation and setting modals
     setModalState(false);
