@@ -34,6 +34,7 @@ interface Props {
 
 export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { cards } = useSelector((state: RootState) => state.timer);
   const { type, started } = useSelector(
     (state: RootState) => state.timer.cards[cardId].timer
   );
@@ -79,7 +80,7 @@ export const TimerCard = ({ cardId, title }: Props): JSX.Element => {
     return () => {
       clearInterval(timeInterval);
     };
-  }, [started]);
+  }, [started, cards.length]);
 
   const onTimerStateChange = (): void => {
     dispatch(toggleTimerState(cardId));
