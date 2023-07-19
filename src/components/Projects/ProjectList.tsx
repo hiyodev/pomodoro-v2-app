@@ -173,7 +173,9 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
               </Button>
             </div>
           </Stack>
-          <Typography>{project.details}</Typography>
+          <Typography sx={{ whiteSpace: "pre-wrap" }}>
+            {project.details}
+          </Typography>
         </Paper>
       );
     }
@@ -217,6 +219,7 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
                   placeholder="Additional Info about task..."
                   multiline
                   rows={3}
+                  autoComplete="off"
                 />
                 <Stack
                   direction="row"
