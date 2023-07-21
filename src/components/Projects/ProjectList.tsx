@@ -88,110 +88,16 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
     );
   };
 
-  const projectList = projects.map((project, index) => {
-    if (project.editMode) {
-      return (
-        <Paper
-          component="form"
-          onSubmit={(e) => onEditSaveHandler(e, project.id)}
-          key={project.id}
-          variant="outlined"
-          sx={{
-            paddingLeft: 1,
-            paddingRight: 1,
-            paddingTop: 1,
-            paddingBottom: 1,
-            marginBottom: 1,
-          }}
-        >
-          <TextField
-            sx={{ marginBottom: 1 }}
-            required
-            fullWidth
-            hiddenLabel
-            defaultValue={project.title}
-            variant="outlined"
-            autoComplete="off"
-            name="project-title-edit"
-            id="project-title-edit"
-          />
-          <TextField
-            fullWidth
-            hiddenLabel
-            defaultValue={project.details}
-            variant="outlined"
-            name="project-details-edit"
-            id="project-details-edit"
-            multiline
-            rows={3}
-          />
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            spacing={2}
-            mt={2}
-            width="100%"
-          >
-            <Button color="error" onClick={() => onDeleteHandler(project.id)}>
-              Delete
-            </Button>
-            <Stack direction="row" spacing={1}>
-              <Button
-                variant="outlined"
-                onClick={() => onEditModeHandler(project.id, false)}
-              >
-                Cancel
-              </Button>
-              <Button variant="contained" type="submit">
-                Save
-              </Button>
-            </Stack>
-          </Stack>
-        </Paper>
-      );
-    } else {
-      return (
-        <Project
-          key={project.id}
-          cardId={cardId}
-          id={project.id}
-          title={project.title}
-          details={project.details}
-        ></Project>
-      );
-
-      // return (
-      //   <Paper
-      //     key={project.id}
-      //     variant="outlined"
-      //     sx={{
-      //       paddingLeft: 2,
-      //       paddingRight: 1,
-      //       paddingTop: 1,
-      //       paddingBottom: 1,
-      //       marginBottom: 1,
-      //     }}
-      //   >
-      //     <Stack direction="row" spacing={1}>
-      //       <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
-      //         {project.title}
-      //       </Typography>
-      //       <div>
-      //         <Button
-      //           sx={{ maxWidth: 45, minWidth: 0 }}
-      //           onClick={() => onEditModeHandler(project.id, true)}
-      //         >
-      //           <MoreHorizIcon />
-      //         </Button>
-      //       </div>
-      //     </Stack>
-      //     <Typography sx={{ whiteSpace: "pre-wrap" }}>
-      //       {project.details}
-      //     </Typography>
-      //   </Paper>
-      // );
-    }
-  });
+  const projectList = projects.map((project) => (
+    <Project
+      key={project.id}
+      cardId={cardId}
+      id={project.id}
+      title={project.title}
+      details={project.details}
+      editMode={project.editMode}
+    ></Project>
+  ));
 
   return (
     <Box mt={1} mb={2}>
