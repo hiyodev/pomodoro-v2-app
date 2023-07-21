@@ -4,23 +4,15 @@ import {
   Card,
   CardContent,
   Grow,
-  Paper,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addProjectToList,
-  delProjectFromList,
-  updateProjectList,
-  setProjectEditMode,
-} from "../../redux/timerSlice";
+import { addProjectToList } from "../../redux/timerSlice";
 import { RootState } from "../../redux/store";
 
 import { Project } from "./Project";
@@ -36,36 +28,6 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
   );
 
   const [openInput, setOpenInput] = useState<boolean>(false);
-
-  const onEditModeHandler = (projectId: string, editState: boolean): void => {
-    dispatch(setProjectEditMode({ cardId, projectId, editState }));
-  };
-
-  const onDeleteHandler = (projectId: string): void => {
-    dispatch(delProjectFromList({ cardId, projectId }));
-  };
-
-  const onEditSaveHandler = (
-    e: React.FormEvent<HTMLFormElement>,
-    projectId: string
-  ): void => {
-    e.preventDefault();
-
-    const input = new FormData(e.currentTarget);
-    const title = String(input.get("project-title-edit"));
-    const details = String(input.get("project-details-edit"));
-
-    dispatch(
-      updateProjectList({
-        cardId,
-        projectId,
-        project: {
-          title,
-          details,
-        },
-      })
-    );
-  };
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
