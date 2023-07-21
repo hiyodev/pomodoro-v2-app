@@ -23,6 +23,8 @@ import {
 } from "../../redux/timerSlice";
 import { RootState } from "../../redux/store";
 
+import { Project } from "./Project";
+
 interface Props {
   cardId: number;
 }
@@ -149,35 +151,45 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
       );
     } else {
       return (
-        <Paper
+        <Project
           key={project.id}
-          variant="outlined"
-          sx={{
-            paddingLeft: 2,
-            paddingRight: 1,
-            paddingTop: 1,
-            paddingBottom: 1,
-            marginBottom: 1,
-          }}
-        >
-          <Stack direction="row" spacing={1}>
-            <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
-              {project.title}
-            </Typography>
-            <div>
-              <Button
-                sx={{ maxWidth: 45, minWidth: 0 }}
-                onClick={() => onEditModeHandler(project.id, true)}
-              >
-                <MoreHorizIcon />
-              </Button>
-            </div>
-          </Stack>
-          <Typography sx={{ whiteSpace: "pre-wrap" }}>
-            {project.details}
-          </Typography>
-        </Paper>
+          cardId={cardId}
+          id={project.id}
+          title={project.title}
+          details={project.details}
+        ></Project>
       );
+
+      // return (
+      //   <Paper
+      //     key={project.id}
+      //     variant="outlined"
+      //     sx={{
+      //       paddingLeft: 2,
+      //       paddingRight: 1,
+      //       paddingTop: 1,
+      //       paddingBottom: 1,
+      //       marginBottom: 1,
+      //     }}
+      //   >
+      //     <Stack direction="row" spacing={1}>
+      //       <Typography variant="h6" sx={{ flex: 1 }} gutterBottom>
+      //         {project.title}
+      //       </Typography>
+      //       <div>
+      //         <Button
+      //           sx={{ maxWidth: 45, minWidth: 0 }}
+      //           onClick={() => onEditModeHandler(project.id, true)}
+      //         >
+      //           <MoreHorizIcon />
+      //         </Button>
+      //       </div>
+      //     </Stack>
+      //     <Typography sx={{ whiteSpace: "pre-wrap" }}>
+      //       {project.details}
+      //     </Typography>
+      //   </Paper>
+      // );
     }
   });
 
