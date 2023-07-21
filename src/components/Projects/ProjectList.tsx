@@ -105,21 +105,18 @@ export const ProjectList = ({ cardId }: Props): JSX.Element => {
                   direction="row"
                   justifyContent="space-between"
                   spacing={2}
-                  mt={2}
+                  mt={1}
                   width="100%"
                 >
-                  <Button>Tasks</Button>
-                  <Stack direction="row" spacing={1}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => setOpenInput(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button variant="contained" type="submit">
-                      Save
-                    </Button>
-                  </Stack>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setOpenInput(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant="contained" type="submit">
+                    Save
+                  </Button>
                 </Stack>
               </form>
             </Grow>
