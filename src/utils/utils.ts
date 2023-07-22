@@ -4,3 +4,15 @@ export const secondsIntoTimer = (totalSeconds: number): string => {
 
   return `${("0" + minutes).slice(-2)}:${("0" + seconds).slice(-2)}`;
 };
+
+export const convertDurationIntoMinutes = (totalSeconds: number): number => {
+  const minutes = Math.floor(totalSeconds / 60);
+
+  return minutes;
+};
+
+export const convertDurationIntoSeconds = (totalSeconds: number): number => {
+  const seconds = totalSeconds % 60;
+
+  return seconds;
+};
