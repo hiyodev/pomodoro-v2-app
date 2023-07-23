@@ -10,9 +10,3 @@ export const convertDurationIntoMinutes = (totalSeconds: number): number => {
 
   return minutes;
 };
-
-export const convertDurationIntoSeconds = (totalSeconds: number): number => {
-  const seconds = totalSeconds % 60;
-
-  return seconds;
-};

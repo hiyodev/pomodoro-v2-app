@@ -15,9 +15,8 @@ import { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { updateCardTitle, deleteCard } from "../../redux/timerSlice";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import {
-  secondsIntoTimer,
   convertDurationIntoMinutes,
   convertDurationIntoSeconds,
 } from "../../utils/utils";
@@ -59,6 +58,23 @@ export const SettingsModal = ({ cardId }: Props) => {
 
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState<boolean>(false);
+  const [timerSettings, setTimerSettings] = useState({
+    pomo: pomoDuration,
+    shortBreak: shortBreakDuration,
+    longBreak: longBreakDuration,
+  });
+
+  const onTimerSettingsHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    type: string
+  ) => {
+    setTimerSettings((oldSettings) => {
+      let temp = { ...oldSettings };
+      console.log(temp == oldSettings);
+
+      return oldSettings;
+    });
+  };
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -113,96 +129,46 @@ export const SettingsModal = ({ cardId }: Props) => {
             name="card-title-input"
             id="card-title-input"
           />
-          <Typography id="pomodoro-title">Pomodoro Timer</Typography>
-          <Stack
-            direction="row"
-            spacing={2}
-            mt={2}
-            justifyContent={"space-between"}
-          >
-            <TextField
-              sx={{ marginBottom: 2 }}
-              type="number"
-              size="small"
-              defaultValue={convertDurationIntoMinutes(pomoDuration.new)}
-              label="Minutes"
-              variant="outlined"
-              autoComplete="off"
-              name="pomodoro-min-input"
-              id="pomodoro-min-input"
-            />
-            <TextField
-              sx={{ marginBottom: 2 }}
-              type="number"
-              size="small"
-              defaultValue={convertDurationIntoSeconds(pomoDuration.new)}
-              label="Seconds"
-              variant="outlined"
-              autoComplete="off"
-              name="pomodoro-sec-input"
-              id="pomodoro-sec-input"
-            />
-          </Stack>
-          <Typography id="pomodoro-title">Short Break Timer</Typography>
-          <Stack
-            direction="row"
-            spacing={2}
-            mt={2}
-            justifyContent={"space-between"}
-          >
-            <TextField
-              sx={{ marginBottom: 2 }}
-              type="number"
-              size="small"
-              defaultValue={convertDurationIntoMinutes(shortBreakDuration.new)}
-              label="Minutes"
-              variant="outlined"
-              autoComplete="off"
-              name="shortbreak-min-input"
-              id="shortbreak-min-input"
-            />
-            <TextField
-              sx={{ marginBottom: 2 }}
-              type="number"
-              size="small"
-              defaultValue={convertDurationIntoSeconds(shortBreakDuration.new)}
-              label="Seconds"
-              variant="outlined"
-              autoComplete="off"
-              name="shortbreak-sec-input"
-              id="shortbreak-sec-input"
-            />
-          </Stack>
-          <Typography id="pomodoro-title">Long Break Timer</Typography>
-          <Stack
-            direction="row"
-            spacing={2}
-            mt={2}
-            justifyContent={"space-between"}
-          >
-            <TextField
-              sx={{ marginBottom: 2 }}
-              type="number"
-              size="small"
-              defaultValue={convertDurationIntoMinutes(longBreakDuration.new)}
-              label="Minutes"
-              variant="outlined"
-              autoComplete="off"
-              name="longbreak-min-input"
-              id="longbreak-min-input"
-            />
-            <TextField
-              sx={{ marginBottom: 2 }}
-              type="number"
-              size="small"
-              defaultValue={convertDurationIntoSeconds(longBreakDuration.new)}
-              label="Seconds"
-              variant="outlined"
-              autoComplete="off"
-              name="longbreak-sec-input"
-              id="longbreak-sec-input"
-            />
-          </Stack>
+          <Typography id="pomodoro-title">Pomodoro</Typography>
+          <TextField
+            sx={{ marginBottom: 2, marginTop: 2 }}
+            fullWidth
+            type="number"
+            size="small"
+            value={convertDurationIntoMinutes(timerSettings.pomo.new)}
+            onChange={(e) => onTimerSettingsHandler(e, "pomo")}
+            label="Minutes"
+            variant="outlined"
+            autoComplete="off"
+            name="pomodoro-min-input"
+            id="pomodoro-min-input"
+          />
+          <Typography id="pomodoro-title">Short Break</Typography>
+          <TextField
+            sx={{ marginBottom: 2, marginTop: 2 }}
+            fullWidth
+            type="number"
+            size="small"
+            value={convertDurationIntoMinutes(timerSettings.shortBreak.new)}
+            label="Minutes"
+            variant="outlined"
+            autoComplete="off"
+            name="shortbreak-min-input"
+            id="shortbreak-min-input"
+          />
+          <Typography id="pomodoro-title">Long Break</Typography>
+          <TextField
+            sx={{ marginBottom: 2, marginTop: 2 }}
+            fullWidth
+            type="number"
+            size="small"
+            value={convertDurationIntoMinutes(timerSettings.longBreak.new)}
+            label="Minutes"
+            variant="outlined"
+            autoComplete="off"
+            name="longbreak-min-input"
+            id="longbreak-min-input"
+          />
           <Stack>
             {cardCount > 1 && (
               <Button color="warning" onClick={() => setModalState(true)}>
