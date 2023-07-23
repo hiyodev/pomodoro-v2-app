@@ -13,13 +13,14 @@ import { ConfirmationModal } from "./ConfirmationModal";
 // Redux
 import { RootState } from "../../redux/store";
 import { useSelector, useDispatch } from "react-redux";
-import { updateCardTitle, deleteCard } from "../../redux/timerSlice";
+import {
+  updateCardTitle,
+  deleteCard,
+  updateTimer,
+} from "../../redux/timerSlice";
 
 import { useState, FormEvent, ChangeEvent } from "react";
-import {
-  convertDurationIntoMinutes,
-  convertDurationIntoSeconds,
-} from "../../utils/utils";
+import { convertDurationIntoMinutes } from "../../utils/utils";
 
 const style = {
   position: "absolute" as "absolute",
@@ -59,20 +60,22 @@ export const SettingsModal = ({ cardId }: Props) => {
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState<boolean>(false);
   const [timerSettings, setTimerSettings] = useState({
-    pomo: pomoDuration,
-    shortBreak: shortBreakDuration,
-    longBreak: longBreakDuration,
+    pomodoro: pomoDuration.new,
+    shortBreak: shortBreakDuration.new,
+    longBreak: longBreakDuration.new,
   });
 
   const onTimerSettingsHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     type: string
   ) => {
+    if (+e.target.value < 1) {
+      return;
+    }
     setTimerSettings((oldSettings) => {
-      let temp = { ...oldSettings };
-      console.log(temp == oldSettings);
-
-      return oldSettings;
+      oldSettings[type as keyof typeof oldSettings] =
+        Number(e.target.value) * 60;
+      return { ...oldSettings };
     });
   };
 
@@ -81,8 +84,12 @@ export const SettingsModal = ({ cardId }: Props) => {
 
     const input = new FormData(e.currentTarget);
     const title = String(input.get("card-title-input"));
+    const pomodoro = Number(input.get("pomodoro-min-input")) * 60;
+    const shortBreak = Number(input.get("shortbreak-min-input")) * 60;
+    const longBreak = Number(input.get("longbreak-min-input")) * 60;
 
     dispatch(updateCardTitle({ id: cardId, newTitle: title }));
+    dispatch(updateTimer({ id: cardId, pomodoro, shortBreak, longBreak }));
     setOpen(false);
   };
 
@@ -135,8 +142,8 @@ export const SettingsModal = ({ cardId }: Props) => {
             fullWidth
             type="number"
             size="small"
-            value={convertDurationIntoMinutes(timerSettings.pomo.new)}
-            onChange={(e) => onTimerSettingsHandler(e, "pomo")}
+            value={convertDurationIntoMinutes(timerSettings.pomodoro)}
+            onChange={(e) => onTimerSettingsHandler(e, "pomodoro")}
             label="Minutes"
             variant="outlined"
             autoComplete="off"
@@ -149,7 +156,8 @@ export const SettingsModal = ({ cardId }: Props) => {
             fullWidth
             type="number"
             size="small"
-            value={convertDurationIntoMinutes(timerSettings.shortBreak.new)}
+            value={convertDurationIntoMinutes(timerSettings.shortBreak)}
+            onChange={(e) => onTimerSettingsHandler(e, "shortBreak")}
             label="Minutes"
             variant="outlined"
             autoComplete="off"
@@ -162,7 +170,8 @@ export const SettingsModal = ({ cardId }: Props) => {
             fullWidth
             type="number"
             size="small"
-            value={convertDurationIntoMinutes(timerSettings.longBreak.new)}
+            value={convertDurationIntoMinutes(timerSettings.longBreak)}
+            onChange={(e) => onTimerSettingsHandler(e, "longBreak")}
             label="Minutes"
             variant="outlined"
             autoComplete="off"
