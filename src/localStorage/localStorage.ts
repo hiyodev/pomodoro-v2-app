@@ -2,7 +2,7 @@ import { TimerState } from "../redux/timerSlice";
 
 export const loadState = () => {
   try {
-    const serializedState = localStorage.getItem("state");
+    const serializedState = localStorage.getItem("pomo-v2-state");
     if (serializedState === null) {
       return undefined;
     }
@@ -16,7 +16,7 @@ export const loadState = () => {
 export const saveState = (state: TimerState) => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem("state", serializedState);
+    localStorage.setItem("pomo-v2-state", serializedState);
   } catch (error) {
     console.log(error);
   }
