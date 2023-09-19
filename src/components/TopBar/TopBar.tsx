@@ -9,8 +9,6 @@ import {
 import ThemeToggleSwitch from "../Buttons/ThemeToggleSwitch";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 
 // Redux
 import { useDispatch } from "react-redux";
@@ -83,10 +81,6 @@ export const TopBar = ({ darkMode, setDarkMode }: Props): JSX.Element => {
             >
               <AddCardIcon color="inherit" />
               <Typography sx={{ marginLeft: 2 }}>Add Timer Card</Typography>
-            </MenuItem>
-            <MenuItem>
-              <NotificationsActiveIcon color="inherit" />
-              <Typography sx={{ marginLeft: 2 }}>Notifications On</Typography>
             </MenuItem>
           </Menu>
         </div>
